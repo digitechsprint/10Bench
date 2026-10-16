@@ -1,6 +1,7 @@
 var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/contact/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__20mr6mxd77tlv._.js")
 R.c("server/chunks/ssr/1li9_next_dist_esm_build_templates_app-page_19f6rvqpgd475.js")
-R.c("server/chunks/ssr/[root-of-the-server]__1e3ssshoa_xau._.js")
+R.c("server/chunks/ssr/artifacts_tenbench_app_contact_page_tsx_19qrvr-ilg2jw._.js")
 R.c("server/chunks/ssr/[root-of-the-server]__1h3g1vlq_3viq._.js")
 R.c("server/chunks/ssr/[root-of-the-server]__160vdz69-h55b._.js")
 R.c("server/chunks/ssr/[root-of-the-server]__0vg0yjwqy5_7e._.js")

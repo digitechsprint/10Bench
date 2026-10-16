@@ -109,6 +109,7 @@
     "outputFileTracingRoot": "/home/runner/workspace",
     "allowedDevOrigins": [
       "*.replit.dev",
+      "*.sisko.replit.dev",
       "localhost",
       "127.0.0.1"
     ],

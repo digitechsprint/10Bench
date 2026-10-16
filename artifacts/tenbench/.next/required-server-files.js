@@ -109,6 +109,7 @@ self.__SERVER_FILES_MANIFEST={
     "outputFileTracingRoot": "/home/runner/workspace",
     "allowedDevOrigins": [
       "*.replit.dev",
+      "*.sisko.replit.dev",
       "localhost",
       "127.0.0.1"
     ],
