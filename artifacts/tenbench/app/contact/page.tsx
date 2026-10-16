@@ -4,14 +4,17 @@ import { ArrowDown, ArrowRight, Mail, MapPin, MessageCircle, Phone } from 'lucid
 import { ContactForm } from '../../components/site-shell';
 import { contact } from '../../components/site-content';
 import { ImageReveal, Reveal, SplitText } from '../../components/motion';
+import { JsonLd } from '../../components/json-ld';
+import { absoluteUrl, breadcrumbSchema, pageMetadata, seo } from '../../lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Contact 10Bench | Ask about your workspace',
-  description: 'Start a conversation with 10Bench about coworking, meeting rooms, or a workspace for your team. Email spaces@10bench.in, call +91 97739 87782, or visit us at 116, Sector 4, Vaishali, Ghaziabad.',
-};
+export const metadata: Metadata = pageMetadata('contact');
 
 export default function ContactPage() {
   return <main>
+    <JsonLd data={[
+      breadcrumbSchema([{ name: 'Contact', path: '/contact/' }]),
+      { '@context': 'https://schema.org', '@type': 'ContactPage', name: seo.pages.contact.title, url: absoluteUrl('/contact/'), about: { '@id': absoluteUrl('/#business') } },
+    ]} />
     <section className="page-hero contact-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
       <Reveal y={16}><span className="eyebrow">Contact 10Bench</span></Reveal>
       <SplitText as="h1" className="display" delay={0.1}>Let’s find your<br /><span className="editorial">perfect desk.</span></SplitText>
@@ -30,10 +33,10 @@ export default function ContactPage() {
         <Reveal delay={0.2} className="contact-path"><span>02</span><div><strong>Review the options</strong><p>Explore the workspace settings and gallery to get a feel for the environment.</p></div></Reveal>
         <Reveal delay={0.25}><Link className="text-link" href="/offerings">Browse workspace options <ArrowRight size={15} /></Link></Reveal>
         <Reveal delay={0.1}><ul className="contact-details" aria-label="10Bench contact details">
-          <li><Mail size={17} aria-hidden="true" /><div><span>Email</span><a href="mailto:spaces@10bench.in">spaces@10bench.in</a></div></li>
-          <li><Phone size={17} aria-hidden="true" /><div><span>Phone</span><a href="tel:+919773987782">+91 97739 87782</a></div></li>
+          <li><Mail size={17} aria-hidden="true" /><div><span>Email</span><a href={`mailto:${contact.email}`}>{contact.email}</a></div></li>
+          <li><Phone size={17} aria-hidden="true" /><div><span>Phone</span><a href={contact.phoneHref}>{contact.phone}</a></div></li>
           <li><MessageCircle size={17} aria-hidden="true" /><div><span>WhatsApp</span><a href={contact.whatsapp} target="_blank" rel="noopener noreferrer">Message us instantly</a></div></li>
-          <li><MapPin size={17} aria-hidden="true" /><div><span>Visit us</span><a href={contact.mapsUrl} target="_blank" rel="noopener noreferrer"><address>116, Sector 4, Vaishali,<br />Ghaziabad</address></a></div></li>
+          <li><MapPin size={17} aria-hidden="true" /><div><span>Visit us</span><a href={contact.mapsUrl} target="_blank" rel="noopener noreferrer"><address>{contact.street},<br />{contact.locality}</address></a></div></li>
         </ul></Reveal>
         <Reveal><div className="contact-note">This enquiry form is a preview only. Submitting it will not send or store your message. To reach us directly, email or call using the details above.</div></Reveal>
       </div>

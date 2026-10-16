@@ -2,11 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, Compass, DoorOpen, Sparkles } from 'lucide-react';
 import { ImageReveal, Magnetic, Reveal, ScrollWords, SplitText } from '../../components/motion';
+import { JsonLd } from '../../components/json-ld';
+import { breadcrumbSchema, pageMetadata, seo } from '../../lib/seo';
 
-export const metadata: Metadata = {
-  title: 'About 10Bench | Work better, together or apart',
-  description: 'Learn about the thinking behind 10Bench: a welcoming coworking space designed for focus, useful connection, and the many ways people work.',
-};
+export const metadata: Metadata = pageMetadata('about');
 
 const principles = [
   ['01', 'Focus deserves a home', 'A workspace should help you get into the work, with room to concentrate and the essentials close at hand.'],
@@ -22,6 +21,7 @@ const steps = [
 
 export default function AboutPage() {
   return <main>
+    <JsonLd data={breadcrumbSchema([{ name: 'About', path: '/about/' }])} />
     <section className="page-hero about-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
       <Reveal y={16}><span className="eyebrow">A space with a point of view</span></Reveal>
       <SplitText as="h1" className="display" delay={0.1}>Work feels better<br />when it <span className="editorial">fits you.</span></SplitText>
@@ -35,6 +35,14 @@ export default function AboutPage() {
         <Reveal delay={0.15}><p>Not everyone works the same way. Some need the calm of their own focus; others think best in company. Most need a bit of both, depending on the day.</p><p>We built 10Bench around that everyday truth. A warm welcome, thoughtfully made places to work, and distinct spaces for the ways a workday can move.</p><Link className="text-link" href="/offerings">See how you could work here <ArrowRight size={15} /></Link></Reveal>
       </div>
       <ImageReveal src="/images/workspace-reception.jpeg" alt="Warm wood reception and glass-fronted rooms at 10Bench" />
+    </div></section>
+    {/* A plain-language summary and fact list: easy for answer engines and AI assistants to quote. */}
+    <section className="glance-section"><div className="container glance-grid">
+      <Reveal><span className="eyebrow">10Bench at a glance</span><p className="glance-summary">{seo.aeo.summary}</p></Reveal>
+      <Reveal delay={0.1}><dl className="glance-facts">{seo.aeo.keyFacts.map(fact => {
+        const [label, ...rest] = fact.split(':');
+        return rest.length ? <div key={fact}><dt>{label}</dt><dd>{rest.join(':').trim()}</dd></div> : <div key={fact}><dd>{fact}</dd></div>;
+      })}</dl></Reveal>
     </div></section>
     <section className="about-belief"><div className="container about-belief-inner">
       <Reveal><span className="eyebrow">The simple idea</span></Reveal>

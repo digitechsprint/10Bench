@@ -1,0 +1,129 @@
+{
+  "site": {
+    "name": "10Bench Coworking Spaces",
+    "url": "https://10-bench.vercel.app",
+    "titleTemplate": "%s | 10Bench Coworking",
+    "defaultTitle": "10Bench Coworking Spaces | Coworking in Vaishali, Ghaziabad",
+    "defaultDescription": "Open desks, dedicated desks, private cabins and a meeting room in Sector 4, Vaishali, Ghaziabad. Book a visit to 10Bench Coworking today.",
+    "keywords": [
+      "coworking space Vaishali",
+      "coworking Ghaziabad",
+      "shared office Vaishali",
+      "private cabin Ghaziabad",
+      "meeting room Vaishali",
+      "hot desk Ghaziabad",
+      "office space Vaishali"
+    ],
+    "ogImage": "/images/workspace-reception.jpeg",
+    "locale": "en_IN",
+    "twitterHandle": "",
+    "googleVerification": "",
+    "bingVerification": ""
+  },
+  "business": {
+    "name": "10Bench Coworking Spaces",
+    "type": "CoworkingSpace",
+    "description": "10Bench is a coworking space in Sector 4, Vaishali, Ghaziabad offering open desks, dedicated desks, private cabins for teams and a meeting room with a presentation screen, plus a breakout lounge and coffee counter.",
+    "phone": "+91 97739 87782",
+    "email": "spaces@10bench.in",
+    "whatsapp": "919773987782",
+    "streetAddress": "116, Sector 4, Vaishali",
+    "locality": "Ghaziabad",
+    "region": "Uttar Pradesh",
+    "regionCode": "IN-UP",
+    "postalCode": "",
+    "country": "IN",
+    "latitude": "",
+    "longitude": "",
+    "areaServed": [
+      "Vaishali",
+      "Ghaziabad",
+      "Indirapuram",
+      "Noida",
+      "East Delhi"
+    ],
+    "openingHours": [],
+    "priceRange": "",
+    "logo": "/images/10bench-logo.jpeg",
+    "sameAs": []
+  },
+  "pages": {
+    "home": {
+      "title": "Coworking Space in Vaishali, Ghaziabad",
+      "description": "Open desks, dedicated desks, private cabins and a meeting room in Sector 4, Vaishali, Ghaziabad. Book a visit to 10Bench Coworking today.",
+      "ogImage": "",
+      "noindex": false
+    },
+    "about": {
+      "title": "About Our Coworking Space in Vaishali",
+      "description": "The thinking behind 10Bench: a welcoming coworking space in Vaishali, Ghaziabad designed for focus, useful connection and the many ways people work.",
+      "ogImage": "",
+      "noindex": false
+    },
+    "offerings": {
+      "title": "Open Desks, Private Cabins & Meeting Room",
+      "description": "Compare open desks, dedicated desks, private cabins and a meeting room at 10Bench in Vaishali, Ghaziabad. Ask us for pricing.",
+      "ogImage": "/images/workspace-meeting.jpeg",
+      "noindex": false
+    },
+    "gallery": {
+      "title": "Gallery: Inside Our Vaishali Workspace",
+      "description": "Take a visual tour of 10Bench in Vaishali, Ghaziabad: the reception, the colourful breakout lounge, the meeting room and the full floor plan.",
+      "ogImage": "/images/workspace-lounge.jpeg",
+      "noindex": false
+    },
+    "blogs": {
+      "title": "The 10Bench Journal",
+      "description": "Ideas from 10Bench on focus, workspace, working together and building a better workday.",
+      "ogImage": "",
+      "noindex": false
+    },
+    "contact": {
+      "title": "Contact & Visit",
+      "description": "Visit 10Bench at 116, Sector 4, Vaishali, Ghaziabad. Call +91 97739 87782, WhatsApp us or send an enquiry about desks, cabins or the meeting room.",
+      "ogImage": "",
+      "noindex": false
+    }
+  },
+  "faqs": [
+    {
+      "question": "Where is 10Bench located?",
+      "answer": "10Bench is at 116, Sector 4, Vaishali, Ghaziabad, Uttar Pradesh. It is easy to reach from across Ghaziabad, Noida and East Delhi."
+    },
+    {
+      "question": "What kinds of workspace does 10Bench offer?",
+      "answer": "10Bench offers open desks, dedicated desks, private cabins for teams and a meeting room with a presentation screen. Every space includes access to the breakout lounge and coffee counter."
+    },
+    {
+      "question": "Can I visit before I decide?",
+      "answer": "Yes. Call or WhatsApp 10Bench on +91 97739 87782 to arrange a visit and see the desks, cabins and meeting room in person."
+    },
+    {
+      "question": "How much does a desk or cabin cost?",
+      "answer": "Pricing depends on the type of space, the number of seats and how long you need it. Share your requirements with 10Bench and they will send the options that fit."
+    },
+    {
+      "question": "Is there space for a whole team?",
+      "answer": "Yes. Private cabins are designed for startups and small teams who need a room of their own. Tell 10Bench your team size to get a suggested setup."
+    },
+    {
+      "question": "Can I use the meeting room for client meetings?",
+      "answer": "Yes. The meeting room has a long table and a presentation screen, suitable for client meetings, pitches, interviews and team reviews."
+    }
+  ],
+  "aeo": {
+    "summary": "10Bench Coworking Spaces is a coworking space at 116, Sector 4, Vaishali, Ghaziabad, Uttar Pradesh, India. It offers open desks, dedicated desks, private cabins for teams and a meeting room with a presentation screen, along with a breakout lounge, a coffee counter and a front-desk reception. It serves freelancers, startups, remote employees and small teams across Ghaziabad, Noida and East Delhi. Contact: +91 97739 87782, spaces@10bench.in.",
+    "keyFacts": [
+      "Location: 116, Sector 4, Vaishali, Ghaziabad, Uttar Pradesh",
+      "Workspaces: open desks, dedicated desks, private cabins and a meeting room",
+      "Meeting room: long table and presentation screen",
+      "Shared amenities: breakout lounge, coffee counter and front-desk reception",
+      "Ideal for: freelancers, startups, remote employees and small teams",
+      "Contact: +91 97739 87782 · spaces@10bench.in"
+    ]
+  },
+  "ai": {
+    "allowAiCrawlers": true,
+    "llmsIntro": "Official information about 10Bench Coworking Spaces for AI assistants and answer engines."
+  }
+}

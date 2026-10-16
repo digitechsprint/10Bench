@@ -187,7 +187,7 @@ export function Footer() {
         </div>
         <div>
           <h3>Visit</h3>
-          <a href={contact.mapsUrl} target="_blank" rel="noopener noreferrer" className="footer-address"><MapPin size={14} aria-hidden="true" /><span>116, Sector 4,<br />Vaishali, Ghaziabad</span></a>
+          <a href={contact.mapsUrl} target="_blank" rel="noopener noreferrer" className="footer-address"><MapPin size={14} aria-hidden="true" /><span>{contact.street},<br />{contact.locality}</span></a>
           <a href={contact.mapsUrl} target="_blank" rel="noopener noreferrer" className="footer-directions">Get directions <ArrowUpRight size={13} /></a>
         </div>
       </div>
@@ -272,6 +272,8 @@ function MobileActionBar() {
 }
 
 export function SiteShell({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  if (pathname.startsWith('/admin')) return <>{children}</>;
   return <div className="site-shell">
     <Intro />
     <ScrollProgress />
@@ -286,7 +288,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
 export function ContactForm() {
   const [notice, setNotice] = useState('');
-  return <form className="contact-form" id="enquiry" onSubmit={event => { event.preventDefault(); setNotice('This is a website preview: your message has not been sent or stored. Please email spaces@10bench.in or call +91 97739 87782.'); }}>
+  return <form className="contact-form" id="enquiry" onSubmit={event => { event.preventDefault(); setNotice(`This is a website preview: your message has not been sent or stored. Please email ${contact.email} or call ${contact.phone}.`); }}>
     <h2>Tell us what you’re looking for</h2>
     <div className="form-grid">
       <div className="field"><label htmlFor="name">Your name</label><input id="name" name="name" autoComplete="name" required placeholder="Name" /></div>

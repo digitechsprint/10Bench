@@ -2,11 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { ImageReveal, LightboxGallery, Magnetic, Reveal, SplitText } from '../../components/motion';
+import { JsonLd } from '../../components/json-ld';
+import { absoluteUrl, breadcrumbSchema, pageMetadata, seo } from '../../lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Gallery Tour | Inside 10Bench Coworking',
-  description: 'Take a visual tour through 10Bench: welcoming reception, colorful lounge, glass-fronted meeting room, and a look at the overall floor plan.',
-};
+export const metadata: Metadata = pageMetadata('gallery');
 
 const tour = [
   { src: '/images/workspace-lounge.jpeg', alt: 'A bright lounge with bold colorful chairs, plants, and a shared counter', label: 'The lounge', title: 'A change of pace', text: 'right in the flow of the day.' },
@@ -16,6 +15,15 @@ const tour = [
 
 export default function GalleryPage() {
   return <main>
+    <JsonLd data={[
+      breadcrumbSchema([{ name: 'Gallery', path: '/gallery/' }]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ImageGallery',
+        name: `Inside ${seo.business.name}`,
+        image: [...tour, { src: '/images/workspace-floorplan.jpeg', alt: 'Floor plan of 10Bench' }].map(item => ({ '@type': 'ImageObject', contentUrl: absoluteUrl(item.src), description: item.alt })),
+      },
+    ]} />
     <section className="page-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
       <Reveal y={16}><span className="eyebrow">Gallery tour</span></Reveal>
       <SplitText as="h1" className="display" delay={0.1}>A first look<br />at <span className="editorial">your next place.</span></SplitText>

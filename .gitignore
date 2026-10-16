@@ -47,3 +47,10 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Local environment secrets
+.env*.local
+.env
+
+# Next.js build output
+artifacts/tenbench/out/

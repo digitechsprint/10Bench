@@ -4,11 +4,9 @@ import { ArrowRight, ArrowUpRight, Check, MapPin, MessageCircle, Navigation, Pho
 import { HorizontalGallery, ImageReveal, Magnetic, Marquee, Reveal, RotatingBadge, ScrollWords, SplitText, Spotlight } from '../components/motion';
 import { AmenityIcon } from '../components/amenity-icon';
 import { amenities, audiences, contact, joinSteps, spaces } from '../components/site-content';
+import { pageMetadata } from '../lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Coworking space in Vaishali, Ghaziabad',
-  description: 'Open desks, dedicated desks, private cabins and a meeting room at 116, Sector 4, Vaishali, Ghaziabad. 10Bench is a warm, well-designed coworking space for freelancers, startups and growing teams.',
-};
+export const metadata: Metadata = pageMetadata('home');
 
 const galleryItems = [
   { src: '/images/workspace-lounge.jpeg', alt: 'Colorful lounge seating and coffee counter in the 10Bench coworking space', title: 'The breakout lounge', label: 'Reset & recharge' },
@@ -169,7 +167,7 @@ export default function HomePage() {
           </Reveal>
         </div>
         <Reveal delay={0.1} className="location-map">
-          <iframe src={contact.mapsEmbed} title="Map showing 10Bench at 116, Sector 4, Vaishali, Ghaziabad" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+          <iframe src={contact.mapsEmbed} title={`Map showing 10Bench at ${contact.address}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
           <span className="location-pin"><MapPin size={16} /> 10Bench</span>
         </Reveal>
       </div>

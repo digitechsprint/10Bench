@@ -3,24 +3,20 @@ import Link from 'next/link';
 import { ArrowRight, Armchair, Check, DoorClosed, Laptop, MessageCircle, Presentation, UsersRound } from 'lucide-react';
 import { ImageReveal, Magnetic, Reveal, SplitText } from '../../components/motion';
 import { contact, spaces } from '../../components/site-content';
+import { JsonLd } from '../../components/json-ld';
+import { breadcrumbSchema, faqSchema, pageMetadata, seo, serviceListSchema } from '../../lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Workspaces | Open desks, private cabins & meeting room',
-  description: 'Compare coworking options at 10Bench, Vaishali: open desks, dedicated desks, private cabins for teams and a meeting room with a presentation screen. Ask us for pricing.',
-};
+export const metadata: Metadata = pageMetadata('offerings');
 
 const spaceIcons = { 'open-desk': Laptop, 'dedicated-desk': Armchair, 'private-cabin': DoorClosed, 'meeting-room': Presentation };
 
-const faqs = [
-  ['Can I visit before I decide?', 'Yes, and we’d encourage it. Call or WhatsApp us to arrange a time, then come and see the desks, cabins and meeting room in person.'],
-  ['How much does it cost?', 'Pricing depends on the type of space, the number of seats and how long you need it. Tell us what you’re looking for and we’ll share the options that fit.'],
-  ['Do you have space for a whole team?', 'Private cabins are designed for teams who need a room of their own. Share your team size and we’ll suggest the right setup.'],
-  ['Can I use the meeting room for client meetings?', 'Absolutely. With a long table and a presentation screen, it’s set up for client meetings, pitches, interviews and team reviews. Get in touch to check availability.'],
-  ['Where exactly are you?', `You’ll find us at ${contact.address}. Use the map on our home page or contact page for directions.`],
-];
-
 export default function OfferingsPage() {
   return <main>
+    <JsonLd data={[
+      breadcrumbSchema([{ name: 'Workspaces', path: '/offerings/' }]),
+      faqSchema(seo.faqs),
+      serviceListSchema(spaces.map(space => ({ name: space.name, description: space.text }))),
+    ]} />
     <section className="page-hero offering-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
       <Reveal y={16}><span className="eyebrow">Workspaces</span></Reveal>
       <SplitText as="h1" className="display" delay={0.1}>Find the space that<br /><span className="editorial">works like you do.</span></SplitText>
@@ -73,7 +69,7 @@ export default function OfferingsPage() {
         <SplitText className="display">Good to know.</SplitText>
         <Reveal delay={0.15}><p>Anything else on your mind? Give us a call on {contact.phone} or send us a message.</p><Link className="text-link" href="/contact">Ask us directly <ArrowRight size={15} /></Link></Reveal>
       </div>
-      <div className="faq-list">{faqs.map(([question, answer], index) => <Reveal key={question} delay={index * 0.08}><details className="faq-item"><summary><span className="faq-index">0{index + 1}</span><span>{question}</span><span className="faq-toggle" aria-hidden="true" /></summary><p>{answer}</p></details></Reveal>)}</div>
+      <div className="faq-list">{seo.faqs.map(({ question, answer }, index) => <Reveal key={question} delay={index * 0.06}><details className="faq-item"><summary><span className="faq-index">{String(index + 1).padStart(2, '0')}</span><span>{question}</span><span className="faq-toggle" aria-hidden="true" /></summary><p>{answer}</p></details></Reveal>)}</div>
     </div></section>
 
     <section className="cta-band"><div className="cta-rings" aria-hidden="true"><i /><i /><i /></div><div className="container cta-inner">

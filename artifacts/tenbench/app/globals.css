@@ -797,6 +797,20 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--tone); }
   .contact-image-caption { min-height: 210px; padding: 28px 24px; }
 }
 
+/* At a glance (AEO summary + key facts on the About page) */
+.glance-section { padding-block: var(--space-section, 72px); background: var(--cream); }
+.glance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+.glance-summary { margin: 18px 0 0; color: var(--navy); font-size: clamp(18px, 1.6vw, 21px); line-height: 1.7; }
+.glance-facts { display: grid; gap: 0; margin: 0; border-top: 1px solid var(--line); }
+.glance-facts div { display: grid; grid-template-columns: 130px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.glance-facts dt { color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding-top: 3px; }
+.glance-facts dd { margin: 0; color: var(--navy); font-size: 15px; line-height: 1.6; }
+.glance-facts div:has(> dd:only-child) { grid-template-columns: 1fr; }
+@media (max-width: 900px) {
+  .glance-grid { grid-template-columns: 1fr; gap: 28px; }
+  .glance-facts div { grid-template-columns: 1fr; gap: 4px; }
+}
+
 /* ---------- Spacing system ----------
    One vertical rhythm for every section, and no fixed card heights that leave blank gaps. */
 :root { --space-section: clamp(56px, 6.2vw, 88px); --space-head: clamp(28px, 3vw, 40px); }

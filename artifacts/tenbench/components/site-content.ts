@@ -2,14 +2,24 @@
 // Items marked `confirm: true` are standard coworking amenities that are not visible in the
 // photography — confirm them with 10Bench before going live, or delete them.
 
+import seoData from '../content/seo.json';
+
+// Contact details come from the admin-editable business settings (content/seo.json),
+// so name, address and phone stay identical everywhere on the site and in structured data.
+const business = seoData.business;
+const address = `${business.streetAddress}, ${business.locality}`;
+const mapQuery = encodeURIComponent(address);
+
 export const contact = {
-  email: 'spaces@10bench.in',
-  phone: '+91 97739 87782',
-  phoneHref: 'tel:+919773987782',
-  whatsapp: 'https://wa.me/919773987782?text=Hi%2010Bench%2C%20I%27d%20like%20to%20know%20more%20about%20your%20workspace.',
-  address: '116, Sector 4, Vaishali, Ghaziabad',
-  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=116%2C%20Sector%204%2C%20Vaishali%2C%20Ghaziabad',
-  mapsEmbed: 'https://maps.google.com/maps?q=116%2C%20Sector%204%2C%20Vaishali%2C%20Ghaziabad&z=15&output=embed',
+  email: business.email,
+  phone: business.phone,
+  phoneHref: `tel:${business.phone.replace(/[^\d+]/g, '')}`,
+  whatsapp: `https://wa.me/${business.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Hi 10Bench, I’d like to know more about your workspace.')}`,
+  address,
+  street: business.streetAddress,
+  locality: business.locality,
+  mapsUrl: `https://www.google.com/maps/search/?api=1&query=${mapQuery}`,
+  mapsEmbed: `https://maps.google.com/maps?q=${mapQuery}&z=15&output=embed`,
 };
 
 export type Tone = 'orange' | 'mustard' | 'leaf' | 'cobalt' | 'coral';

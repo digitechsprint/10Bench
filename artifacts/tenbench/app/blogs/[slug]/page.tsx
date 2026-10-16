@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { articles } from '../../../components/blog-data';
 import { ImageReveal, Reveal, SplitText } from '../../../components/motion';
+import { JsonLd } from '../../../components/json-ld';
+import { absoluteUrl, breadcrumbSchema, seo } from '../../../lib/seo';
 
 export function generateStaticParams() {
   return articles.map(article => ({ slug: article.slug }));
@@ -13,14 +15,38 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const article = articles.find(item => item.slug === slug);
   if (!article) return { title: 'Story not found' };
-  return { title: `${article.title} | The 10Bench Journal`, description: article.excerpt, openGraph: { title: article.title, description: article.excerpt, type: 'article' } };
+  const path = `/blogs/${article.slug}/`;
+  const image = absoluteUrl(article.image);
+  return {
+    title: article.title,
+    description: article.excerpt,
+    alternates: { canonical: path },
+    openGraph: { type: 'article', title: article.title, description: article.excerpt, url: path, images: [{ url: image, width: 1280, height: 720, alt: article.alt }] },
+    twitter: { card: 'summary_large_image', title: article.title, description: article.excerpt, images: [image] },
+  };
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = articles.find(item => item.slug === slug);
   if (!article) notFound();
+  const path = `/blogs/${article.slug}/`;
   return <main>
+    <JsonLd data={[
+      breadcrumbSchema([{ name: 'Journal', path: '/blogs/' }, { name: article.title, path }]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: article.title,
+        description: article.excerpt,
+        image: absoluteUrl(article.image),
+        url: absoluteUrl(path),
+        mainEntityOfPage: absoluteUrl(path),
+        articleSection: article.category,
+        author: { '@type': 'Organization', name: seo.business.name, url: absoluteUrl('/') },
+        publisher: { '@id': absoluteUrl('/#business') },
+      },
+    ]} />
     <div className="container article">
       <div className="article-top">
         <Reveal y={12}><Link className="text-link" href="/blogs"><ArrowLeft size={15} /> Back to the journal</Link><div className="blog-meta" style={{ marginTop: 27 }}><span>{article.category}</span><span>{article.date}</span></div></Reveal>

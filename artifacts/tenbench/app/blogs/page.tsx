@@ -3,15 +3,26 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { ImageReveal, Magnetic, Reveal, SplitText } from '../../components/motion';
 import { articles } from '../../components/blog-data';
+import { JsonLd } from '../../components/json-ld';
+import { absoluteUrl, breadcrumbSchema, pageMetadata, seo } from '../../lib/seo';
 
-export const metadata: Metadata = {
-  title: 'The 10Bench Journal | Notes on better workdays',
-  description: 'Ideas and observations from 10Bench on workspace, focus, working together, and making a more human workday.',
-};
+export const metadata: Metadata = pageMetadata('blogs');
 
 export default function BlogsPage() {
   const [featured, ...stories] = articles;
   return <main>
+    <JsonLd data={[
+      breadcrumbSchema([{ name: 'Journal', path: '/blogs/' }]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Blog',
+        name: seo.pages.blogs.title,
+        description: seo.pages.blogs.description,
+        url: absoluteUrl('/blogs/'),
+        publisher: { '@id': absoluteUrl('/#business') },
+        blogPost: articles.map(article => ({ '@type': 'BlogPosting', headline: article.title, description: article.excerpt, url: absoluteUrl(`/blogs/${article.slug}/`) })),
+      },
+    ]} />
     <section className="page-hero journal-hero"><div className="container">
       <Reveal y={16}><span className="eyebrow">The 10Bench journal</span></Reveal>
       <SplitText as="h1" className="display" delay={0.1}>A few thoughts<br />on <span className="editorial">working well.</span></SplitText>
