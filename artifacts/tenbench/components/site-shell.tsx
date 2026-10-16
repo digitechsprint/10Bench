@@ -22,6 +22,14 @@ export function Intro() {
   const enter = () => setOpen(false);
   return (
     <div className={`intro ${open ? '' : 'is-leaving'}`} aria-hidden={!open}>
+      <input
+        id="intro-enter-toggle"
+        className="intro-dismiss"
+        type="checkbox"
+        aria-hidden="true"
+        tabIndex={-1}
+        onChange={enter}
+      />
       <motion.div
         className="intro-content"
         initial={false}
@@ -31,10 +39,21 @@ export function Intro() {
         <img className="intro-logo" src="/images/10bench-logo.jpeg" alt="10Bench Coworking Spaces" />
         <div className="intro-rule" />
         <p>A little room to do your best work.</p>
-        <button className="enter-button" onClick={enter} aria-label="Enter the 10Bench website">
+        <label
+          className="enter-button"
+          htmlFor="intro-enter-toggle"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              event.currentTarget.click();
+            }
+          }}
+        >
           Enter 10Bench <ArrowRight size={15} aria-hidden="true" />
-        </button>
-        <button className="intro-skip" onClick={enter}>Skip intro</button>
+        </label>
+        <label className="intro-skip" htmlFor="intro-enter-toggle">Skip intro</label>
       </motion.div>
     </div>
   );

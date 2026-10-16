@@ -1,1 +1,6 @@
-{"version":4,"routes":{"/blogs/a-workday-with-more-than-one-gear":{},"/blogs/the-case-for-a-change-of-scene":{},"/blogs/meetings-that-feel-like-progress":{}},"dynamicRoutes":{"/blogs/[slug]":{"dataRoute":null,"dataRouteRegex":null,"fallback":null,"fallbackRevalidate":false,"fallbackSourceRoute":"/blogs/[slug]","routeRegex":"^\\/blogs\\/([^/]+?)(?:\\/)?$","allowHeader":[]}},"notFoundRoutes":[]}
+{
+  "version": 4,
+  "routes": {},
+  "dynamicRoutes": {},
+  "notFoundRoutes": []
+}
