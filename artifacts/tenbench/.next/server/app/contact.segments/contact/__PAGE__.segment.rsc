@@ -1,0 +1,32 @@
+1:"$Sreact.fragment"
+2:"/_next/static/chunks/36jvm_ldvrzhh.js"
+3:"/_next/static/chunks/1zx-vne69pdsh.js"
+4:"/_next/static/chunks/10tzu4sgyqlkp.js"
+5:I[73895,["$2","$3","$4"],"SiteShell"]
+6:I[50544,["$2","$3","$4"],"default"]
+7:I[49958,["$2","$3","$4"],"default"]
+8:I[40339,["$2","$3","$4"],""]
+f:I[73895,["$2","$3","$4"],"ContactForm"]
+10:I[9088,["$2","$3","$4"],"OutletBoundary"]
+11:"$Sreact.suspense"
+14:"ViewportBoundary"
+15:I[9088,["$2","$3","$4"],"$14"]
+16:"MetadataBoundary"
+17:I[9088,["$2","$3","$4"],"$16"]
+:HL["/_next/static/chunks/3rgtbx41436hu.css","style"]
+:HL["/images/workspace-reception.jpeg","image"]
+a:X
+d:X
+d:C
+e:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$1","c",{"children":[["$","main",null,{"children":[["$","section",null,{"className":"page-hero","children":["$","div",null,{"className":"container","children":[["$","span",null,{"className":"eyebrow","children":"Contact us"}],["$","h1",null,{"className":"display","children":["Let’s find a way",["$","br",null,{}],"to ",["$","span",null,{"className":"editorial","children":"make it work."}]]}],["$","p",null,{"children":"Tell us what you need from a workspace. We would be glad to help you explore whether 10Bench feels like the right fit."}]]}]}],["$","section",null,{"className":"section-pad","children":[["$","div",null,{"className":"container contact-grid","children":[["$","div",null,{"className":"contact-copy","children":[["$","span",null,{"className":"eyebrow","children":"Start here"}],["$","h2",null,{"className":"display","children":"A conversation is a good first step."}],["$","p",null,{"children":"Interested in a place to work, a room to meet, or space for a team? Share a little about what you have in mind and we can take it from there."}],["$","div",null,{"className":"contact-note","children":"This website does not publish contact details that have not been verified. The enquiry form below is a visual preview only and does not send or store messages."}]]}],["$","$Lf",null,{}]]}],["$","div",null,{"className":"container image-frame contact-image","children":["$","img",null,{"src":"/images/workspace-reception.jpeg","alt":"Warmly lit 10Bench reception area, ready to welcome visitors"}]}]]}]]}],null,["$","$L10",null,{"children":["$","$11",null,{"name":"Next.MetadataOutlet","children":"$@12"}]}]]}],"p":"$@13","v":null,"s":"$a"}}]]
+b:[["children",{"s":"contact","h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@c","v":"$d","s":"$a"},"c":"$Qe"}]]
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3rgtbx41436hu.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/36jvm_ldvrzhh.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/1zx-vne69pdsh.js","async":true}],["$","script","script-2",{"src":"/_next/static/chunks/10tzu4sgyqlkp.js","async":true}]],["$","html",null,{"lang":"en","children":["$","body",null,{"children":["$","$L5",null,{"children":["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}],"notFound":[["$","main",null,{"className":"not-found","children":["$","div",null,{"children":[["$","span",null,{"className":"eyebrow","children":"Wrong turn"}],["$","h1",null,{"className":"display","children":"Not this way."}],["$","p",null,{"style":{"color":"var(--muted)","marginBottom":25},"children":"We couldn’t find that page. Let’s get you back to a good place."}],["$","$L8",null,{"href":"/","className":"button","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left","aria-hidden":"true","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}]," Back to 10Bench"]}]]}]}],[]]}]}]}]}]]}],"p":"$@9","v":null,"s":"$a"},"c":"$Qb"},"h":{"r":["$","$1","h",{"children":[null,["$","$L15",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","$L17",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$11",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Contact 10Bench | Ask about your workspace | 10Bench Coworking Spaces"}],["$","meta","1",{"name":"description","content":"Start a conversation with 10Bench about coworking, meeting rooms, or a workspace for your team. We do not publish unverified contact details."}],["$","meta","2",{"name":"application-name","content":"10Bench Coworking Spaces"}],["$","meta","3",{"property":"og:title","content":"10Bench Coworking Spaces"}],["$","meta","4",{"property":"og:description","content":"A welcoming coworking environment for independent professionals and growing teams."}],["$","meta","5",{"property":"og:site_name","content":"10Bench Coworking Spaces"}],["$","meta","6",{"property":"og:type","content":"website"}],["$","meta","7",{"name":"twitter:card","content":"summary"}],["$","meta","8",{"name":"twitter:title","content":"10Bench Coworking Spaces"}],["$","meta","9",{"name":"twitter:description","content":"A welcoming coworking environment for independent professionals and growing teams."}]]}]}],null]}],null]}],"p":"$@18","v":null,"s":"$a"}},"a":"$@19","u":"$@1a","b":"RQGIRgpT0a0SLzDoVwfwR"}
+12:null
+a:300
+1a:true
+a:C
+19:0
+c:"$undefined"
+9:"$undefined"
+18:"$undefined"
+13:"$undefined"

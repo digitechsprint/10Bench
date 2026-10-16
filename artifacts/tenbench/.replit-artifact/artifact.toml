@@ -1,0 +1,24 @@
+kind = "web"
+previewPath = "/"
+title = "10Bench Coworking Spaces"
+description = "A multi-page website for 10Bench Coworking Spaces, introducing its workspaces, amenities, gallery, blog, and contact information with a branded animated welcome experience."
+version = "1.0.0"
+id = "artifacts/tenbench"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20786
+
+[services.development]
+run = "pnpm --filter @workspace/tenbench run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/tenbench", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/tenbench/out"
+
+[services.env]
+PORT = "20786"
+BASE_PATH = "/"

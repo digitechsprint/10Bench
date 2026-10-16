@@ -1,0 +1,47 @@
+export const articles = [
+  {
+    slug: 'a-workday-with-more-than-one-gear',
+    category: 'Work well',
+    date: 'A note from 10Bench',
+    title: 'A workday with more than one gear',
+    excerpt: 'Deep focus, a quick reset, a useful conversation. Why the best workdays leave room to shift.',
+    image: '/images/workspace-lounge.jpeg',
+    alt: 'Colorful lounge at 10Bench offering a relaxed counterpoint to focused desk work',
+    intro: 'A good workday is rarely one long, uninterrupted stretch. It has a rhythm: effort, a pause, a conversation, then back to the thing that matters.',
+    sections: [
+      ['Let the day change shape', 'Different tasks ask for different surroundings. Writing might need quiet. A planning session might need a table and a few open minds. A short break might be exactly what makes the next hour feel possible.'],
+      ['Build in room to reset', 'A small change of scene can help loosen a stuck thought. Step away from the screen, settle into a different chair, or share a quick exchange with someone nearby. Not every pause needs to be productive to be useful.'],
+      ['Make space for the work in front of you', 'The best environment is not the one that dictates a perfect routine. It is the one that gives you enough options to find your own. A place to focus, a place to meet, and a place to take a breath can make a workday feel more human.'],
+    ],
+  },
+  {
+    slug: 'the-case-for-a-change-of-scene',
+    category: 'A place to work',
+    date: 'A note from 10Bench',
+    title: 'The case for a change of scene',
+    excerpt: 'When your usual four walls stop helping, a different setting can open up the day again.',
+    image: '/images/workspace-reception.jpeg',
+    alt: 'Warm reception area at 10Bench with wood finishes and welcoming light',
+    intro: 'Familiar routines can be comforting. But when the home desk turns into the everything desk, work and life can start to blur around the edges.',
+    sections: [
+      ['A boundary you can feel', 'Moving your work somewhere else creates a useful beginning and end to the day. The commute does not need to be long to make a mental difference; even the act of arriving can signal a shift in attention.'],
+      ['A little energy from the room', 'A new setting changes what you notice. Light, movement, other people quietly getting on with their work: these details can help a workday feel less solitary without demanding your attention.'],
+      ['Choose a scene that suits the task', 'A change of place works best when it gives you the kind of space you came for. Look for somewhere you can concentrate, take a proper break, and find the right room when the work calls for conversation.'],
+    ],
+  },
+  {
+    slug: 'meetings-that-feel-like-progress',
+    category: 'Getting together',
+    date: 'A note from 10Bench',
+    title: 'Meetings that feel like progress',
+    excerpt: 'A thoughtful setting will not run the meeting for you, but it can help everyone arrive ready.',
+    image: '/images/workspace-meeting.jpeg',
+    alt: 'Meeting room prepared with a long wood table and presentation display',
+    intro: 'A meeting is more than a calendar block. It is a chance to make a decision, share a point of view, or move a piece of work forward together.',
+    sections: [
+      ['Give the conversation a home', 'When everyone is working from somewhere different, a dedicated room brings people into the same moment. A table, a screen, and enough space to see one another create a useful starting point.'],
+      ['Know what the room is for', 'A simple agenda helps people arrive with context. Decide what needs to be discussed, what can be shared beforehand, and what a useful outcome looks like. Then leave enough room for the unexpected idea.'],
+      ['Leave with a next step', 'Good conversations deserve a clear landing. End with who is doing what, by when, and what still needs an answer. The room may be booked for an hour; the momentum can carry on afterwards.'],
+    ],
+  },
+];

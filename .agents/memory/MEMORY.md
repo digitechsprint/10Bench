@@ -1,0 +1,1 @@
+- [Next.js conversion](nextjs-vite-template.md) — remove the Vite starter’s `src/pages` tree before using Next’s root `app/` router.
