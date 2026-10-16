@@ -154,46 +154,46 @@ export function Header() {
 
 export function Footer() {
   return <footer className="footer">
+    <div className="footer-glow" aria-hidden="true" />
     <div className="container">
-      <div className="footer-cta">
-        <Reveal><span className="eyebrow">Have a workday in mind?</span><h2 className="display">Let’s find you <span className="editorial">a good seat.</span></h2></Reveal>
-        <Reveal delay={0.1} className="footer-cta-action"><Magnetic strength={0.4}><Link href="/contact" className="footer-orb" data-cursor="Say hi">Start a<br />conversation<ArrowUpRight size={22} /></Link></Magnetic></Reveal>
-      </div>
+      <Reveal className="footer-cta">
+        <div>
+          <h2 className="display">Let’s find you <span className="editorial">a good seat.</span></h2>
+          <p>Come by Sector 4, Vaishali for a look around, or send us a message on WhatsApp.</p>
+        </div>
+        <div className="footer-cta-actions">
+          <Magnetic><Link href="/contact" className="button">Book a visit <ArrowUpRight size={15} /></Link></Magnetic>
+          <Magnetic><a href={contact.whatsapp} target="_blank" rel="noopener noreferrer" className="button button-ghost"><FaWhatsapp size={16} /> WhatsApp</a></Magnetic>
+        </div>
+      </Reveal>
       <div className="footer-main">
         <div className="footer-brand">
-          <p>Space to focus. Room to meet. A welcoming place for the work you want to do.</p>
+          <Link href="/" className="footer-logo" aria-label="10Bench home"><span>10</span>bench</Link>
+          <p>Coworking spaces in Vaishali, Ghaziabad. Desks, cabins and a meeting room for the way work happens now.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <nav className="footer-links" aria-label="Footer navigation">
+            <Link href="/about">About</Link><Link href="/offerings">Workspaces</Link><Link href="/gallery">Gallery</Link><Link href="/blogs">Journal</Link>
+          </nav>
+        </div>
+        <div>
+          <h3>Contact</h3>
           <ul className="footer-contact">
-            <li><Mail size={15} aria-hidden="true" /><a href="mailto:spaces@10bench.in">spaces@10bench.in</a></li>
-            <li><Phone size={15} aria-hidden="true" /><a href="tel:+919773987782">+91 97739 87782</a></li>
-            <li><MessageCircle size={15} aria-hidden="true" /><a href={contact.whatsapp} target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></li>
-            <li><MapPin size={15} aria-hidden="true" /><a href={contact.mapsUrl} target="_blank" rel="noopener noreferrer">{contact.address}</a></li>
+            <li><Phone size={14} aria-hidden="true" /><a href={contact.phoneHref}>{contact.phone}</a></li>
+            <li><Mail size={14} aria-hidden="true" /><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+            <li><MessageCircle size={14} aria-hidden="true" /><a href={contact.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
           </ul>
         </div>
-        <div><h3>Explore</h3><nav className="footer-links" aria-label="Footer explore navigation">
-          <Link href="/about">About 10Bench</Link><Link href="/offerings">Our offering</Link><Link href="/gallery">Gallery tour</Link><Link href="/blogs">Journal</Link>
-        </nav></div>
-        <div><h3>Start a conversation</h3><nav className="footer-links" aria-label="Footer contact navigation">
-          <Link href="/contact">Contact us</Link><Link href="/contact#enquiry">Ask about the space</Link><Link href="/blogs">Ideas for better work</Link>
-        </nav></div>
+        <div>
+          <h3>Visit</h3>
+          <a href={contact.mapsUrl} target="_blank" rel="noopener noreferrer" className="footer-address"><MapPin size={14} aria-hidden="true" /><span>116, Sector 4,<br />Vaishali, Ghaziabad</span></a>
+          <a href={contact.mapsUrl} target="_blank" rel="noopener noreferrer" className="footer-directions">Get directions <ArrowUpRight size={13} /></a>
+        </div>
       </div>
-      <motion.div
-        className="footer-wordmark"
-        aria-hidden="true"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
-      >
-        {'10bench'.split('').map((letter, index) => <motion.span
-          key={index}
-          variants={{ hidden: { y: '100%' }, show: { y: '0%', transition: { duration: 1.1, ease } } }}
-          className={index < 2 ? 'is-accent' : ''}
-        >{letter}</motion.span>)}
-      </motion.div>
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} 10Bench Coworking Spaces</span>
-        <span>Made for the way work happens now.</span>
-        <button type="button" className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Back to top <ArrowUp size={14} /></button>
+        <span>© {new Date().getFullYear()} 10Bench Coworking Spaces. All rights reserved.</span>
+        <button type="button" className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">Back to top <ArrowUp size={13} /></button>
       </div>
     </div>
   </footer>;
