@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { SiteShell } from '../components/site-shell';
 
@@ -17,6 +17,13 @@ export const metadata: Metadata = {
     title: '10Bench Coworking Spaces',
     description: 'A welcoming coworking environment for independent professionals and growing teams.',
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#102338',
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

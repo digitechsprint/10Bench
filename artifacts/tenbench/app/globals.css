@@ -788,6 +788,99 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--tone); }
   .contact-image-caption { min-height: 210px; padding: 28px 24px; }
 }
 
+/* ---------- Mobile ---------- */
+.mobile-bar { display: none; }
+.quick-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.mobile-nav-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.mobile-nav-actions .button { min-height: 50px; padding: 0 14px; }
+.mobile-nav-foot > a { padding: 6px 0; }
+
+@media (max-width: 900px) {
+  /* Bottom action bar replaces the floating WhatsApp button */
+  .wa-float { display: none; }
+  .mobile-bar { position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 95; display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 6px; padding: 6px; border-radius: 20px; background: rgba(8,19,31,.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 18px 40px -12px rgba(8,19,31,.6); }
+  .mobile-bar a { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 50px; border-radius: 14px; color: white; font-size: 13px; font-weight: 700; }
+  .mobile-bar a:first-child svg { color: var(--orange); }
+  .mobile-bar a:nth-child(2) svg { color: #25d366; }
+  .mobile-bar-cta { background: var(--grad-warm); }
+  html.is-locked .mobile-bar { display: none; }
+  .footer { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .lightbox { padding-bottom: calc(90px + env(safe-area-inset-bottom)); }
+
+  /* Comfortable tap targets */
+  .text-link { min-height: 44px; margin-top: 10px; }
+  .text-link:after { bottom: 8px; }
+  .footer-links { gap: 0; }
+  .footer-links a { padding: 11px 0; }
+  .footer-contact { gap: 0; }
+  .footer-contact li { min-height: 44px; }
+  .footer-contact a, .location-list a { display: inline-block; padding: 12px 0; }
+  .location-list li { padding-block: 8px; }
+  .contact-details a, .contact-details address { display: inline-block; padding: 6px 0; }
+  .contact-hero .contact-jump { padding-block: 12px 7px; }
+
+  /* iOS zooms into fields with text smaller than 16px */
+  .field input, .field select, .field textarea { font-size: 16px; }
+
+  /* Swipe gallery: start on the intro, tighter spacing */
+  .hgallery-sticky { padding: 70px 0 60px; }
+  .hgallery-track { scroll-snap-type: x mandatory; scroll-padding-inline: 21px; }
+  .hgallery-intro, .hgallery-card, .hgallery-end { scroll-snap-align: start; }
+}
+
+@media (max-width: 600px) {
+  .section-pad { padding-block: 68px; }
+  .section-head h2, .manifesto h2, .audience-head h2, .location-copy h2, .about-intro h2, .tour-intro h2, .faq-layout h2, .offer-detail h2, .contact-copy h2, .principles h2, .about-process-heading h2 { font-size: clamp(36px, 10.5vw, 44px); }
+  .hero { padding: 36px 0 56px; }
+  .hero h1 { font-size: clamp(44px, 12.5vw, 58px); margin: 20px 0; }
+  .hero-actions { margin-top: 26px; }
+  .hero-actions .magnetic, .hero-actions .button, .location-actions .magnetic, .location-actions .button, .quick-actions .button, .pricing-actions .magnetic, .pricing-actions .button { width: 100%; }
+  .hero-chips { margin-top: 24px; gap: 8px; }
+  .chip { padding: 8px 12px; font-size: 12px; }
+  .hero-visual { min-height: 320px; }
+  .scroll-words { font-size: clamp(26px, 7.6vw, 32px); }
+  .marquee-item { gap: 24px; padding-right: 24px; font-size: 40px; }
+
+  /* Minimum readable label sizes */
+  .eyebrow { font-size: 11px; }
+  .space-tag, .offering-panel-label, .hgallery-label, .location-list span, .blog-meta, .tour-tile figcaption span { font-size: 11px; }
+  .about-hero-foot, .journal-hero-note { font-size: 11px; }
+  .about-image-caption { font-size: 11px; }
+  .journal-feature-label { font-size: 11px; }
+  .contact-hero-mark { display: none; }
+
+  /* Compact cards so sections don't become endless columns */
+  .space-card { padding: 24px 22px; border-radius: 20px; }
+  .space-card-top { margin-bottom: 22px; }
+  .space-card h3 { font-size: 25px; }
+  .amenities-section { padding: 70px 0; }
+  .amenity-grid { gap: 10px; }
+  .amenity { display: grid; grid-template-columns: 46px 1fr; column-gap: 16px; align-items: start; padding: 18px; border-radius: 18px; }
+  .amenity-icon { grid-row: span 2; width: 46px; height: 46px; margin: 0; border-radius: 14px; }
+  .amenity h3 { margin: 2px 0 4px; font-size: 17px; }
+  .audience-list { gap: 10px; }
+  .audience-card { grid-template-columns: 34px 1fr; gap: 12px; padding: 20px; border-radius: 18px; }
+  .audience-num { font-size: 22px; }
+  .audience-card h3 { font-size: 18px; }
+  .join-steps { gap: 10px; }
+  .join-step { display: grid; grid-template-columns: 56px 1fr; column-gap: 14px; padding: 22px 20px; border-radius: 20px; }
+  .join-num { grid-row: span 2; margin: 0; font-size: 40px; }
+  .join-step h3 { margin: 2px 0 6px; font-size: 20px; }
+  .offering-panel-icon { width: 52px; height: 52px; margin-bottom: 20px; border-radius: 16px; }
+  .offering-panel strong { font-size: 19px; }
+  .pricing-band h2 { font-size: clamp(36px, 10.5vw, 44px); }
+  .footer-cta h2 { font-size: clamp(40px, 11vw, 52px); }
+  .footer-orb { width: 124px; height: 124px; font-size: 13px; }
+  .cta-band h2 { font-size: clamp(34px, 10vw, 42px); }
+  .cta-rings { display: none; }
+}
+
+@media (max-width: 360px) {
+  .mobile-bar { grid-template-columns: 1fr 1fr 1.3fr; }
+  .mobile-bar a { font-size: 12px; gap: 5px; }
+  .brand { width: 124px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

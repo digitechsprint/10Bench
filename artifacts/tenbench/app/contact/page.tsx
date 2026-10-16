@@ -15,7 +15,10 @@ export default function ContactPage() {
     <section className="page-hero contact-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
       <Reveal y={16}><span className="eyebrow">Contact 10Bench</span></Reveal>
       <SplitText as="h1" className="display" delay={0.1}>Let’s find your<br /><span className="editorial">perfect desk.</span></SplitText>
-      <Reveal delay={0.45}><p>Looking for a desk, a private cabin for your team or a room for your next client meeting? Call, WhatsApp or send an enquiry, and come see 10Bench for yourself.</p><Link href="#enquiry" className="contact-jump">Go to the enquiry form <ArrowDown size={15} /></Link></Reveal>
+      <Reveal delay={0.45}><p>Looking for a desk, a private cabin for your team or a room for your next client meeting? Call, WhatsApp or send an enquiry, and come see 10Bench for yourself.</p><div className="quick-actions">
+        <a href={contact.phoneHref} className="button"><Phone size={16} /> Call {contact.phone}</a>
+        <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer" className="button button-outline"><MessageCircle size={16} /> WhatsApp us</a>
+      </div><Link href="#enquiry" className="contact-jump">Or send an enquiry <ArrowDown size={15} /></Link></Reveal>
       <div className="contact-hero-mark" aria-hidden="true">10<span>BENCH</span></div>
     </div></section>
     <section className="section-pad contact-section"><div className="container contact-grid">

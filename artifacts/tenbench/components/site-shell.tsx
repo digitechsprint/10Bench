@@ -140,8 +140,12 @@ export function Header() {
           </div>)}
         </div>
         <motion.div className="mobile-nav-foot" initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { delay: 0.5 } }} exit={{ opacity: 0 }}>
-          <a href="mailto:spaces@10bench.in">spaces@10bench.in</a>
-          <a href="tel:+919773987782">+91 97739 87782</a>
+          <div className="mobile-nav-actions">
+            <Link href="/contact" className="button" onClick={() => setMenuOpen(false)}>Book a visit <ArrowRight size={15} /></Link>
+            <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer" className="button button-ghost"><FaWhatsapp size={17} /> WhatsApp</a>
+          </div>
+          <a href={contact.phoneHref}>{contact.phone}</a>
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
         </motion.div>
       </motion.nav>}
     </AnimatePresence>
@@ -258,6 +262,15 @@ function WhatsAppButton() {
   </motion.a>;
 }
 
+/** Phone-only bottom bar: the three actions a visitor on a phone most wants, always one tap away. */
+function MobileActionBar() {
+  return <nav className="mobile-bar" aria-label="Quick contact">
+    <a href={contact.phoneHref}><Phone size={18} aria-hidden="true" />Call</a>
+    <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer"><FaWhatsapp size={19} aria-hidden="true" />WhatsApp</a>
+    <Link href="/contact" className="mobile-bar-cta">Book a visit <ArrowRight size={15} aria-hidden="true" /></Link>
+  </nav>;
+}
+
 export function SiteShell({ children }: { children: ReactNode }) {
   return <div className="site-shell">
     <Intro />
@@ -267,6 +280,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
     {children}
     <Footer />
     <WhatsAppButton />
+    <MobileActionBar />
   </div>;
 }
 
