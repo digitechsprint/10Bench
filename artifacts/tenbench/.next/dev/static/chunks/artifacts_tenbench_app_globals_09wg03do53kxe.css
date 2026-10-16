@@ -2154,6 +2154,46 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   margin-top: 34px;
 }
 
+.contact-details {
+  border-top: 1px solid var(--line);
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-details li {
+  border-bottom: 1px solid var(--line);
+  grid-template-columns: 34px 1fr;
+  gap: 13px;
+  padding: 16px 0;
+  display: grid;
+}
+
+.contact-details svg {
+  color: var(--orange);
+  margin-top: 2px;
+}
+
+.contact-details span {
+  color: var(--muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-size: 11px;
+  display: block;
+}
+
+.contact-details a, .contact-details address {
+  color: var(--navy);
+  font: 600 15px/1.6 var(--font-display);
+  overflow-wrap: anywhere;
+  font-style: normal;
+}
+
+.contact-details a:hover {
+  color: var(--orange);
+}
+
 .contact-form {
   scroll-margin-top: 30px;
 }

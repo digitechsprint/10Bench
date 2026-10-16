@@ -385,6 +385,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .contact-path p { margin: 6px 0 0; font-size: 12px; line-height: 1.7; }
 .contact-copy .text-link { margin-top: 25px; }
 .contact-copy .contact-note { margin-top: 34px; }
+.contact-details { list-style: none; margin: 32px 0 0; padding: 0; border-top: 1px solid var(--line); }
+.contact-details li { display: grid; grid-template-columns: 34px 1fr; gap: 13px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.contact-details svg { color: var(--orange); margin-top: 2px; }
+.contact-details span { display: block; color: var(--muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+.contact-details a, .contact-details address { color: var(--navy); font: 600 15px/1.6 var(--font-display); font-style: normal; overflow-wrap: anywhere; }
+.contact-details a:hover { color: var(--orange); }
 .contact-form { scroll-margin-top: 30px; }
 .contact-form h2 { font-size: 24px; }
 .contact-image-story { display: grid; grid-template-columns: 1.15fr .85fr; margin-top: 92px; background: var(--navy); color: white; }

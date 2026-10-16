@@ -116,7 +116,7 @@ export function Reveal({ children, className = '' }: { children: ReactNode; clas
 
 export function ContactForm() {
   const [notice, setNotice] = useState('');
-  return <form className="contact-form" id="enquiry" onSubmit={event => { event.preventDefault(); setNotice('This is a website preview: your message has not been sent or stored. Please get in touch through a verified 10Bench contact channel.'); }}>
+  return <form className="contact-form" id="enquiry" onSubmit={event => { event.preventDefault(); setNotice('This is a website preview: your message has not been sent or stored. Please email spaces@10bench.in or call +91 97739 87782.'); }}>
     <h2>Tell us what you’re looking for</h2>
     <div className="form-grid">
       <div className="field"><label htmlFor="name">Your name</label><input id="name" name="name" autoComplete="name" required placeholder="Name" /></div>
