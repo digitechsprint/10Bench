@@ -3,16 +3,26 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import {
-  ArrowDown, ArrowUp, Bot, Building2, CheckCircle2, ExternalLink, FileText, Gauge, Globe2, HelpCircle, Loader2, LogOut, MapPin,
-  Plus, Save, Search, Trash2, TriangleAlert,
+  ArrowDown, ArrowUp, Bot, Building2, CheckCircle2, Database, Download, ExternalLink, FileText, Gauge, Globe2, HelpCircle, Inbox, Loader2, LogOut, Mail, MapPin,
+  MessageCircle, Phone, Plus, RefreshCw, Save, Search, Trash2, TriangleAlert,
 } from 'lucide-react';
 import type { PageKey, SeoSettings } from '../../lib/seo';
 
-type Section = 'overview' | 'site' | 'pages' | 'business' | 'faqs' | 'ai';
-type Storage = 'github' | 'local' | 'none';
+type Section = 'overview' | 'enquiries' | 'site' | 'pages' | 'business' | 'faqs' | 'ai';
+type Storage = 'supabase' | 'github' | 'local' | 'none';
+type EnquiryStatus = 'new' | 'contacted' | 'closed';
+type Enquiry = { id: string; created_at: string; name: string; email: string; phone: string | null; interest: string | null; message: string; page: string | null; status: EnquiryStatus; notes: string | null };
+
+const storageLabels: Record<Storage, string> = {
+  supabase: 'Supabase database: changes go live within seconds',
+  github: 'GitHub: each save redeploys the site (about a minute)',
+  local: 'Local file (development)',
+  none: 'Not configured: saving is disabled',
+};
 
 const sections: { id: Section; label: string; icon: typeof Gauge; hint: string }[] = [
   { id: 'overview', label: 'Overview', icon: Gauge, hint: 'SEO health and quick links' },
+  { id: 'enquiries', label: 'Enquiries', icon: Inbox, hint: 'Messages sent from the website contact form' },
   { id: 'site', label: 'Search basics', icon: Search, hint: 'Site title, description, keywords, verification' },
   { id: 'pages', label: 'Pages', icon: FileText, hint: 'Title, description and share image per page' },
   { id: 'business', label: 'Business & location', icon: Building2, hint: 'Local SEO, address, hours and map position' },
@@ -102,6 +112,98 @@ function SocialPreview({ title, description, image, domain }: { title: string; d
   </div>;
 }
 
+/* ---------- Enquiries inbox ---------- */
+
+const statusLabels: Record<EnquiryStatus, string> = { new: 'New', contacted: 'Contacted', closed: 'Closed' };
+const formatDate = (value: string) => new Date(value).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+
+function toCsv(rows: Enquiry[]) {
+  const cells = (values: (string | null)[]) => values.map(value => `"${(value ?? '').replace(/"/g, '""')}"`).join(',');
+  return [cells(['Date', 'Name', 'Email', 'Phone', 'Interest', 'Message', 'Status', 'Notes', 'Page']),
+    ...rows.map(row => cells([formatDate(row.created_at), row.name, row.email, row.phone, row.interest, row.message, statusLabels[row.status], row.notes, row.page]))].join('\n');
+}
+
+function Enquiries({ onCount }: { onCount: (count: number) => void }) {
+  const [items, setItems] = useState<Enquiry[] | null>(null);
+  const [error, setError] = useState('');
+  const [configured, setConfigured] = useState(true);
+  const [filter, setFilter] = useState<'all' | EnquiryStatus>('all');
+  const [loading, setLoading] = useState(false);
+
+  const refresh = useCallback(async () => {
+    setLoading(true);
+    const result = await api('/api/admin/enquiries/');
+    setLoading(false);
+    if (result.ok) { setItems(result.data.enquiries); setError(''); onCount(result.data.enquiries.filter((item: Enquiry) => item.status === 'new').length); }
+    else { setConfigured(result.data.configured !== false); setError(result.data.error || 'Could not load enquiries.'); }
+  }, [onCount]);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  async function patch(id: string, changes: Partial<Pick<Enquiry, 'status' | 'notes'>>) {
+    const next = (items ?? []).map(item => item.id === id ? { ...item, ...changes } : item);
+    setItems(next);
+    onCount(next.filter(item => item.status === 'new').length);
+    const result = await api('/api/admin/enquiries/', { method: 'PATCH', body: JSON.stringify({ id, ...changes }) });
+    if (!result.ok) { setError(result.data.error || 'Could not update.'); refresh(); }
+  }
+
+  async function remove(item: Enquiry) {
+    if (!window.confirm(`Delete the enquiry from ${item.name}? This can’t be undone.`)) return;
+    const result = await api(`/api/admin/enquiries/?id=${item.id}`, { method: 'DELETE' });
+    if (result.ok) refresh(); else setError(result.data.error || 'Could not delete.');
+  }
+
+  if (!configured) return <div className="adm-card adm-empty">
+    <Database size={30} />
+    <h2>Connect Supabase to receive enquiries</h2>
+    <p className="adm-muted">Add <code>SUPABASE_URL</code> and <code>SUPABASE_SERVICE_ROLE_KEY</code> to the environment variables and run <code>supabase/schema.sql</code> in your Supabase project. Until then, the contact form asks visitors to call or WhatsApp instead.</p>
+  </div>;
+  if (!items) return <div className="adm-card adm-empty">{error ? <p className="adm-error">{error}</p> : <Loader2 className="adm-spin" size={22} />}</div>;
+
+  const shown = filter === 'all' ? items : items.filter(item => item.status === filter);
+  const count = (status: EnquiryStatus) => items.filter(item => item.status === status).length;
+  return <>
+    <div className="adm-inbox-bar">
+      <div className="adm-tabs">
+        <button type="button" className={filter === 'all' ? 'is-active' : ''} onClick={() => setFilter('all')}>All {items.length}</button>
+        {(Object.keys(statusLabels) as EnquiryStatus[]).map(status => <button key={status} type="button" className={filter === status ? 'is-active' : ''} onClick={() => setFilter(status)}>{statusLabels[status]} {count(status)}</button>)}
+      </div>
+      <div className="adm-inbox-actions">
+        <button type="button" className="adm-btn adm-btn-ghost" onClick={refresh} disabled={loading}><RefreshCw size={15} className={loading ? 'adm-spin' : ''} /> Refresh</button>
+        <button type="button" className="adm-btn adm-btn-ghost" disabled={!items.length} onClick={() => {
+          const url = URL.createObjectURL(new Blob([`﻿${toCsv(shown)}`], { type: 'text/csv;charset=utf-8' }));
+          Object.assign(document.createElement('a'), { href: url, download: `10bench-enquiries-${new Date().toISOString().slice(0, 10)}.csv` }).click();
+          URL.revokeObjectURL(url);
+        }}><Download size={15} /> Export CSV</button>
+      </div>
+    </div>
+    {error && <p className="adm-error">{error}</p>}
+    {!shown.length ? <div className="adm-card adm-empty"><Inbox size={30} /><h2>No enquiries {filter === 'all' ? 'yet' : `marked ${statusLabels[filter].toLowerCase()}`}</h2><p className="adm-muted">New messages from the contact form will appear here.</p></div> :
+      <div className="adm-enquiries">{shown.map(item => {
+        const whatsapp = item.phone ? `https://wa.me/${item.phone.replace(/\D/g, '').replace(/^(?!91)(\d{10})$/, '91$1')}` : null;
+        return <article key={item.id} className={`adm-card adm-enquiry is-${item.status}`}>
+          <header>
+            <div><strong>{item.name}</strong><span>{formatDate(item.created_at)}{item.interest ? ` · ${item.interest}` : ''}</span></div>
+            <select value={item.status} onChange={event => patch(item.id, { status: event.target.value as EnquiryStatus })} aria-label="Status">
+              {(Object.keys(statusLabels) as EnquiryStatus[]).map(status => <option key={status} value={status}>{statusLabels[status]}</option>)}
+            </select>
+          </header>
+          <p className="adm-enquiry-message">{item.message}</p>
+          <div className="adm-enquiry-links">
+            <a href={`mailto:${item.email}?subject=${encodeURIComponent('Your enquiry with 10Bench')}`}><Mail size={14} /> {item.email}</a>
+            {item.phone && <a href={`tel:${item.phone.replace(/[^\d+]/g, '')}`}><Phone size={14} /> {item.phone}</a>}
+            {whatsapp && <a href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={14} /> WhatsApp</a>}
+          </div>
+          <label className="adm-field"><span className="adm-label">Internal notes</span>
+            <textarea rows={2} defaultValue={item.notes ?? ''} placeholder="Called on Monday, visiting Thursday…" onBlur={event => { if (event.target.value !== (item.notes ?? '')) patch(item.id, { notes: event.target.value }); }} />
+          </label>
+          <button type="button" className="adm-enquiry-delete" onClick={() => remove(item)}><Trash2 size={14} /> Delete</button>
+        </article>;
+      })}</div>}
+  </>;
+}
+
 /* ---------- Login ---------- */
 
 function Login({ configured, onDone }: { configured: boolean; onDone: () => void }) {
@@ -142,6 +244,7 @@ export function AdminApp() {
   const [status, setStatus] = useState<{ tone: 'good' | 'bad' | 'info'; text: string; errors?: string[] } | null>(null);
   const [saving, setSaving] = useState(false);
   const [loadKey, setLoadKey] = useState(0);
+  const [newCount, setNewCount] = useState(0);
 
   const load = useCallback(async () => {
     const sessionResult = await api('/api/admin/session/');
@@ -154,6 +257,8 @@ export function AdminApp() {
     setVersion(result.data.version);
     setStorage(result.data.storage);
     setLoadKey(key => key + 1);
+    const enquiries = await api('/api/admin/enquiries/?status=new');
+    if (enquiries.ok) setNewCount(enquiries.data.enquiries.length);
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -207,6 +312,7 @@ export function AdminApp() {
       <nav>
         {sections.map(item => <button key={item.id} type="button" className={section === item.id ? 'is-active' : ''} onClick={() => setSection(item.id)}>
           <item.icon size={17} /><span>{item.label}</span>
+          {item.id === 'enquiries' && newCount > 0 && <em className="adm-badge">{newCount}</em>}
         </button>)}
       </nav>
       <div className="adm-side-foot">
@@ -218,21 +324,22 @@ export function AdminApp() {
     <main className="adm-main">
       <header className="adm-top">
         <div><h1>{current.label}</h1><p>{current.hint}</p></div>
-        <div className="adm-top-actions">
+        {section !== 'enquiries' && <div className="adm-top-actions">
           <span className={`adm-pill ${dirty ? 'is-dirty' : ''}`}>{dirty ? 'Unsaved changes' : 'All changes saved'}</span>
           <button type="button" className="adm-btn adm-btn-primary" onClick={save} disabled={!dirty || saving || storage === 'none'}>
             {saving ? <Loader2 className="adm-spin" size={16} /> : <Save size={16} />} Save changes
           </button>
-        </div>
+        </div>}
       </header>
 
-      {storage === 'none' && <p className="adm-alert"><TriangleAlert size={16} /> Saving is not set up on this server yet. Add a <code>GITHUB_TOKEN</code> environment variable (see ADMIN.md in the project) and redeploy.</p>}
+      {storage === 'none' && section !== 'enquiries' && <p className="adm-alert"><TriangleAlert size={16} /> Saving is not set up on this server yet. Connect Supabase (or add a <code>GITHUB_TOKEN</code>), see ADMIN.md in the project, and redeploy.</p>}
       {status && <div className={`adm-status is-${status.tone}`}>
         {status.tone === 'good' ? <CheckCircle2 size={17} /> : <TriangleAlert size={17} />}
         <div><strong>{status.text}</strong>{status.errors && <ul>{status.errors.map(error => <li key={error}>{error}</li>)}</ul>}</div>
       </div>}
 
       <div key={loadKey} className="adm-body">
+        {section === 'enquiries' && <Enquiries onCount={setNewCount} />}
         {section === 'overview' && <>
           <div className="adm-overview">
             <div className="adm-card adm-score">
@@ -240,6 +347,8 @@ export function AdminApp() {
               <div><h2>SEO health</h2><p>{checks.filter(check => check.ok).length} of {checks.length} checks passed. Fix the amber items to improve how you appear on Google, Maps and AI assistants.</p></div>
             </div>
             <div className="adm-card adm-links">
+              <h2>Settings storage</h2>
+              <p className={`adm-storage is-${storage}`}><Database size={15} /> {storageLabels[storage]}</p>
               <h2>Live files</h2>
               {[['Sitemap', '/sitemap.xml'], ['Robots rules', '/robots.txt'], ['AI summary (llms.txt)', '/llms.txt']].map(([label, href]) => <a key={href} href={href} target="_blank" rel="noreferrer">{label}<ExternalLink size={14} /></a>)}
               <h2>Test tools</h2>

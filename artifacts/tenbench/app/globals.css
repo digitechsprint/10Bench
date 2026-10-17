@@ -513,6 +513,11 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--tone); }
 .field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { outline: none; }
 .field textarea { min-height: 130px; resize: vertical; }
 .form-submit { margin-top: 30px; }
+.field-optional { color: var(--muted); font-weight: 500; }
+.field-trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.form-feedback.is-sent { border-left-color: #2f8f4e; background: #e9f5ec; }
+.form-feedback.is-error { border-left-color: #c0392b; background: #fbe9e7; }
+.form-submit:disabled { opacity: .7; cursor: wait; }
 .form-feedback { color: var(--navy); border-left: 2px solid var(--orange); padding: 11px 13px; margin-top: 17px; font-size: 13px; line-height: 1.6; background: rgba(255,255,255,.55); }
 .not-found { position: relative; overflow: hidden; min-height: 70vh; display: grid; place-items: center; text-align: center; padding: 60px 20px; background: var(--cream); }
 .not-found > div { position: relative; }

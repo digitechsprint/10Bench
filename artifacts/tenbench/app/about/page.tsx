@@ -3,9 +3,12 @@ import Link from 'next/link';
 import { ArrowRight, Compass, DoorOpen, Sparkles } from 'lucide-react';
 import { ImageReveal, Magnetic, Reveal, ScrollWords, SplitText } from '../../components/motion';
 import { JsonLd } from '../../components/json-ld';
-import { breadcrumbSchema, pageMetadata, seo } from '../../lib/seo';
+import { breadcrumbSchema, pageMetadata } from '../../lib/seo';
+import { getSeo } from '../../lib/settings';
 
-export const metadata: Metadata = pageMetadata('about');
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getSeo(), 'about');
+}
 
 const principles = [
   ['01', 'Focus deserves a home', 'A workspace should help you get into the work, with room to concentrate and the essentials close at hand.'],
@@ -19,9 +22,10 @@ const steps = [
   { icon: Sparkles, title: 'Find your own rhythm', text: 'Choose a starting point that feels right. The best workday is the one that works for you.' },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const seo = await getSeo();
   return <main>
-    <JsonLd data={breadcrumbSchema([{ name: 'About', path: '/about/' }])} />
+    <JsonLd data={breadcrumbSchema(seo, [{ name: 'About', path: '/about/' }])} />
     <section className="page-hero about-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
       <Reveal y={16}><span className="eyebrow">A space with a point of view</span></Reveal>
       <SplitText as="h1" className="display" delay={0.1}>Work feels better<br />when it <span className="editorial">fits you.</span></SplitText>

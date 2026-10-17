@@ -1,12 +1,14 @@
 import 'server-only';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import bundled from '../content/seo.json';
-import type { SeoSettings } from './seo';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { defaultSeo, withDefaults, type SeoSettings } from './seo';
+import { SEO_ROW_ID, SEO_TAG } from './settings';
+import { supabaseConfigured, supabaseRest } from './supabase';
 
-// Where SEO settings are saved:
-// - Production: committed to GitHub (GITHUB_TOKEN etc.), which triggers a Vercel redeploy so every
-//   page is rebuilt with the new metadata and structured data.
+// Where the admin saves SEO settings, in order of preference:
+// - Supabase: stored in the site_settings table; pages refresh within seconds, no rebuild.
+// - GitHub: committed to the repo, which triggers a Vercel rebuild (about a minute).
 // - Local development: written straight to content/seo.json.
 const github = () => {
   const token = process.env.GITHUB_TOKEN;
@@ -22,7 +24,10 @@ const github = () => {
 const localFile = () => path.join(process.cwd(), 'content', 'seo.json');
 const isDev = process.env.NODE_ENV !== 'production';
 
-export function storageMode(): 'github' | 'local' | 'none' {
+export type StorageMode = 'supabase' | 'github' | 'local' | 'none';
+
+export function storageMode(): StorageMode {
+  if (supabaseConfigured()) return 'supabase';
   if (github()) return 'github';
   return isDev ? 'local' : 'none';
 }
@@ -41,21 +46,59 @@ const contentsUrl = () => {
   return `https://api.github.com/repos/${config.repo}/contents/${config.file}`;
 };
 
+type SettingsRow = { data: SeoSettings; updated_at: string };
+
 export async function readSettings(): Promise<{ settings: SeoSettings; version: string | null }> {
   const mode = storageMode();
+  if (mode === 'supabase') {
+    const rows = await supabaseRest<SettingsRow[]>(`site_settings?id=eq.${SEO_ROW_ID}&select=data,updated_at`, { cache: 'no-store' });
+    // Nothing saved yet: start from content/seo.json; the first save creates the row.
+    return rows[0] ? { settings: withDefaults(rows[0].data), version: rows[0].updated_at } : { settings: defaultSeo, version: null };
+  }
   if (mode === 'github') {
     const response = await githubRequest(`${contentsUrl()}?ref=${encodeURIComponent(github()!.branch)}`);
     if (!response.ok) throw new Error(`GitHub read failed (${response.status}). Check GITHUB_TOKEN, GITHUB_REPO and GITHUB_SEO_PATH.`);
     const file = await response.json() as { content: string; sha: string };
-    return { settings: JSON.parse(Buffer.from(file.content, 'base64').toString('utf8')), version: file.sha };
+    return { settings: withDefaults(JSON.parse(Buffer.from(file.content, 'base64').toString('utf8'))), version: file.sha };
   }
-  if (mode === 'local') return { settings: JSON.parse(await readFile(localFile(), 'utf8')), version: null };
-  return { settings: bundled as SeoSettings, version: null };
+  if (mode === 'local') return { settings: withDefaults(JSON.parse(await readFile(localFile(), 'utf8'))), version: null };
+  return { settings: defaultSeo, version: null };
+}
+
+const conflict = () => new Error('These settings were changed somewhere else since you opened them. Reload the admin and try again.');
+
+/** Refresh every page, the sitemap, robots.txt and llms.txt after settings change. */
+function refreshSite() {
+  revalidateTag(SEO_TAG, { expire: 0 });
+  revalidatePath('/', 'layout');
+  for (const file of ['/sitemap.xml', '/robots.txt', '/llms.txt']) revalidatePath(file);
 }
 
 export async function saveSettings(settings: SeoSettings, version: string | null): Promise<{ message: string; version: string | null }> {
-  const body = `${JSON.stringify(settings, null, 2)}\n`;
   const mode = storageMode();
+  if (mode === 'supabase') {
+    const now = new Date().toISOString();
+    let rows: SettingsRow[];
+    if (version) {
+      // Only update if nobody else saved since this copy was loaded.
+      rows = await supabaseRest<SettingsRow[]>(`site_settings?id=eq.${SEO_ROW_ID}&updated_at=eq.${encodeURIComponent(version)}&select=data,updated_at`, {
+        method: 'PATCH', cache: 'no-store', headers: { Prefer: 'return=representation' }, body: JSON.stringify({ data: settings, updated_at: now }),
+      });
+      if (!rows.length) throw conflict();
+    } else {
+      try {
+        rows = await supabaseRest<SettingsRow[]>('site_settings?select=data,updated_at', {
+          method: 'POST', cache: 'no-store', headers: { Prefer: 'return=representation' }, body: JSON.stringify({ id: SEO_ROW_ID, data: settings, updated_at: now }),
+        });
+      } catch (error) {
+        if (/\(409\)/.test((error as Error).message)) throw conflict();
+        throw error;
+      }
+    }
+    refreshSite();
+    return { message: 'Saved. The website updates within a few seconds.', version: rows[0]?.updated_at ?? now };
+  }
+  const body = `${JSON.stringify(settings, null, 2)}\n`;
   if (mode === 'github') {
     const config = github()!;
     const response = await githubRequest(contentsUrl(), {
@@ -67,14 +110,15 @@ export async function saveSettings(settings: SeoSettings, version: string | null
         ...(version ? { sha: version } : {}),
       }),
     });
-    if (response.status === 409 || response.status === 422) throw new Error('These settings were changed somewhere else since you opened them. Reload the admin and try again.');
+    if (response.status === 409 || response.status === 422) throw conflict();
     if (!response.ok) throw new Error(`GitHub save failed (${response.status}). Check the token has "Contents: read and write" access.`);
     const result = await response.json() as { content: { sha: string } };
     return { message: 'Saved. The site is redeploying and changes will be live in about a minute.', version: result.content.sha };
   }
   if (mode === 'local') {
     await writeFile(localFile(), body, 'utf8');
+    refreshSite();
     return { message: 'Saved to content/seo.json. Refresh the site to see the changes.', version: null };
   }
-  throw new Error('Saving is not set up on this server. Add GITHUB_TOKEN in the hosting environment variables.');
+  throw new Error('Saving is not set up on this server. Add the Supabase (or GitHub) environment variables and redeploy.');
 }

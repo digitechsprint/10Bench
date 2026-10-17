@@ -1,12 +1,15 @@
 import { articles } from '../../components/blog-data';
 import { spaces } from '../../components/site-content';
-import { absoluteUrl, fullAddress, pagePaths, seo, type PageKey } from '../../lib/seo';
+import { absoluteUrl as toAbsolute, fullAddress, pagePaths, type PageKey } from '../../lib/seo';
+import { getSeo } from '../../lib/settings';
 
 // llms.txt (https://llmstxt.org): a plain-text summary AI assistants can read and cite.
 export const dynamic = 'force-static';
 
-export function GET() {
+export async function GET() {
+  const seo = await getSeo();
   const { site, business, aeo, faqs } = seo;
+  const absoluteUrl = (path: string) => toAbsolute(seo, path);
   const lines = [
     `# ${business.name}`,
     '',
@@ -18,7 +21,7 @@ export function GET() {
     ...aeo.keyFacts.map(fact => `- ${fact}`),
     '',
     '## Contact',
-    `- Address: ${fullAddress()}, India`,
+    `- Address: ${fullAddress(seo)}, India`,
     `- Phone: ${business.phone}`,
     `- Email: ${business.email}`,
     `- WhatsApp: https://wa.me/${business.whatsapp.replace(/\D/g, '')}`,

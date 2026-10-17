@@ -2,25 +2,27 @@
 // Items marked `confirm: true` are standard coworking amenities that are not visible in the
 // photography — confirm them with 10Bench before going live, or delete them.
 
-import seoData from '../content/seo.json';
+import type { SeoSettings } from '../lib/seo';
 
-// Contact details come from the admin-editable business settings (content/seo.json),
-// so name, address and phone stay identical everywhere on the site and in structured data.
-const business = seoData.business;
-const address = `${business.streetAddress}, ${business.locality}`;
-const mapQuery = encodeURIComponent(address);
+// Contact details are derived from the admin-editable business settings, so name, address and
+// phone stay identical everywhere on the site and in structured data.
+export type Contact = ReturnType<typeof buildContact>;
 
-export const contact = {
-  email: business.email,
-  phone: business.phone,
-  phoneHref: `tel:${business.phone.replace(/[^\d+]/g, '')}`,
-  whatsapp: `https://wa.me/${business.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Hi 10Bench, I’d like to know more about your workspace.')}`,
-  address,
-  street: business.streetAddress,
-  locality: business.locality,
-  mapsUrl: `https://www.google.com/maps/search/?api=1&query=${mapQuery}`,
-  mapsEmbed: `https://maps.google.com/maps?q=${mapQuery}&z=15&output=embed`,
-};
+export function buildContact(business: SeoSettings['business']) {
+  const address = `${business.streetAddress}, ${business.locality}`;
+  const mapQuery = encodeURIComponent(address);
+  return {
+    email: business.email,
+    phone: business.phone,
+    phoneHref: `tel:${business.phone.replace(/[^\d+]/g, '')}`,
+    whatsapp: `https://wa.me/${business.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Hi 10Bench, I’d like to know more about your workspace.')}`,
+    address,
+    street: business.streetAddress,
+    locality: business.locality,
+    mapsUrl: `https://www.google.com/maps/search/?api=1&query=${mapQuery}`,
+    mapsEmbed: `https://maps.google.com/maps?q=${mapQuery}&z=15&output=embed`,
+  };
+}
 
 export type Tone = 'orange' | 'mustard' | 'leaf' | 'cobalt' | 'coral';
 

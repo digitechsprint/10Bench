@@ -5,7 +5,8 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { articles } from '../../../components/blog-data';
 import { ImageReveal, Reveal, SplitText } from '../../../components/motion';
 import { JsonLd } from '../../../components/json-ld';
-import { absoluteUrl, breadcrumbSchema, seo } from '../../../lib/seo';
+import { absoluteUrl, breadcrumbSchema } from '../../../lib/seo';
+import { getSeo } from '../../../lib/settings';
 
 export function generateStaticParams() {
   return articles.map(article => ({ slug: article.slug }));
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const article = articles.find(item => item.slug === slug);
   if (!article) return { title: 'Story not found' };
   const path = `/blogs/${article.slug}/`;
-  const image = absoluteUrl(article.image);
+  const image = absoluteUrl(await getSeo(), article.image);
   return {
     title: article.title,
     description: article.excerpt,
@@ -31,20 +32,21 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const article = articles.find(item => item.slug === slug);
   if (!article) notFound();
   const path = `/blogs/${article.slug}/`;
+  const seo = await getSeo();
   return <main>
     <JsonLd data={[
-      breadcrumbSchema([{ name: 'Journal', path: '/blogs/' }, { name: article.title, path }]),
+      breadcrumbSchema(seo, [{ name: 'Journal', path: '/blogs/' }, { name: article.title, path }]),
       {
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
         headline: article.title,
         description: article.excerpt,
-        image: absoluteUrl(article.image),
-        url: absoluteUrl(path),
-        mainEntityOfPage: absoluteUrl(path),
+        image: absoluteUrl(seo, article.image),
+        url: absoluteUrl(seo, path),
+        mainEntityOfPage: absoluteUrl(seo, path),
         articleSection: article.category,
-        author: { '@type': 'Organization', name: seo.business.name, url: absoluteUrl('/') },
-        publisher: { '@id': absoluteUrl('/#business') },
+        author: { '@type': 'Organization', name: seo.business.name, url: absoluteUrl(seo, '/') },
+        publisher: { '@id': absoluteUrl(seo, '/#business') },
       },
     ]} />
     <div className="container article">

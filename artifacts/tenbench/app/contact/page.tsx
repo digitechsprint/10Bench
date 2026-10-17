@@ -2,18 +2,24 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowDown, ArrowRight, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { ContactForm } from '../../components/site-shell';
-import { contact } from '../../components/site-content';
+import { buildContact } from '../../components/site-content';
 import { ImageReveal, Reveal, SplitText } from '../../components/motion';
 import { JsonLd } from '../../components/json-ld';
-import { absoluteUrl, breadcrumbSchema, pageMetadata, seo } from '../../lib/seo';
+import { absoluteUrl, breadcrumbSchema, pageMetadata } from '../../lib/seo';
+import { getSeo } from '../../lib/settings';
+import { supabaseConfigured } from '../../lib/supabase';
 
-export const metadata: Metadata = pageMetadata('contact');
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getSeo(), 'contact');
+}
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const seo = await getSeo();
+  const contact = buildContact(seo.business);
   return <main>
     <JsonLd data={[
-      breadcrumbSchema([{ name: 'Contact', path: '/contact/' }]),
-      { '@context': 'https://schema.org', '@type': 'ContactPage', name: seo.pages.contact.title, url: absoluteUrl('/contact/'), about: { '@id': absoluteUrl('/#business') } },
+      breadcrumbSchema(seo, [{ name: 'Contact', path: '/contact/' }]),
+      { '@context': 'https://schema.org', '@type': 'ContactPage', name: seo.pages.contact.title, url: absoluteUrl(seo, '/contact/'), about: { '@id': absoluteUrl(seo, '/#business') } },
     ]} />
     <section className="page-hero contact-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
       <Reveal y={16}><span className="eyebrow">Contact 10Bench</span></Reveal>
@@ -38,7 +44,7 @@ export default function ContactPage() {
           <li><MessageCircle size={17} aria-hidden="true" /><div><span>WhatsApp</span><a href={contact.whatsapp} target="_blank" rel="noopener noreferrer">Message us instantly</a></div></li>
           <li><MapPin size={17} aria-hidden="true" /><div><span>Visit us</span><a href={contact.mapsUrl} target="_blank" rel="noopener noreferrer"><address>{contact.street},<br />{contact.locality}</address></a></div></li>
         </ul></Reveal>
-        <Reveal><div className="contact-note">This enquiry form is a preview only. Submitting it will not send or store your message. To reach us directly, email or call using the details above.</div></Reveal>
+        {!supabaseConfigured() && <Reveal><div className="contact-note">Online enquiries aren’t switched on yet. To reach us, please call, WhatsApp or email using the details above.</div></Reveal>}
       </div>
       <Reveal delay={0.15} className="contact-form-wrap"><ContactForm /></Reveal>
     </div>

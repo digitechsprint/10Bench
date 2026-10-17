@@ -3,9 +3,12 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { ImageReveal, LightboxGallery, Magnetic, Reveal, SplitText } from '../../components/motion';
 import { JsonLd } from '../../components/json-ld';
-import { absoluteUrl, breadcrumbSchema, pageMetadata, seo } from '../../lib/seo';
+import { absoluteUrl, breadcrumbSchema, pageMetadata } from '../../lib/seo';
+import { getSeo } from '../../lib/settings';
 
-export const metadata: Metadata = pageMetadata('gallery');
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getSeo(), 'gallery');
+}
 
 const tour = [
   { src: '/images/workspace-lounge.jpeg', alt: 'A bright lounge with bold colorful chairs, plants, and a shared counter', label: 'The lounge', title: 'A change of pace', text: 'right in the flow of the day.' },
@@ -13,15 +16,16 @@ const tour = [
   { src: '/images/workspace-meeting.jpeg', alt: 'Meeting room at 10Bench featuring a long table and presentation display', label: 'Meeting room', title: 'Bring a conversation', text: 'into focus.' },
 ];
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const seo = await getSeo();
   return <main>
     <JsonLd data={[
-      breadcrumbSchema([{ name: 'Gallery', path: '/gallery/' }]),
+      breadcrumbSchema(seo, [{ name: 'Gallery', path: '/gallery/' }]),
       {
         '@context': 'https://schema.org',
         '@type': 'ImageGallery',
         name: `Inside ${seo.business.name}`,
-        image: [...tour, { src: '/images/workspace-floorplan.jpeg', alt: 'Floor plan of 10Bench' }].map(item => ({ '@type': 'ImageObject', contentUrl: absoluteUrl(item.src), description: item.alt })),
+        image: [...tour, { src: '/images/workspace-floorplan.jpeg', alt: 'Floor plan of 10Bench' }].map(item => ({ '@type': 'ImageObject', contentUrl: absoluteUrl(seo, item.src), description: item.alt })),
       },
     ]} />
     <section className="page-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">

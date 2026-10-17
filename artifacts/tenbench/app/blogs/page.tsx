@@ -4,23 +4,27 @@ import { ArrowRight } from 'lucide-react';
 import { ImageReveal, Magnetic, Reveal, SplitText } from '../../components/motion';
 import { articles } from '../../components/blog-data';
 import { JsonLd } from '../../components/json-ld';
-import { absoluteUrl, breadcrumbSchema, pageMetadata, seo } from '../../lib/seo';
+import { absoluteUrl, breadcrumbSchema, pageMetadata } from '../../lib/seo';
+import { getSeo } from '../../lib/settings';
 
-export const metadata: Metadata = pageMetadata('blogs');
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getSeo(), 'blogs');
+}
 
-export default function BlogsPage() {
+export default async function BlogsPage() {
+  const seo = await getSeo();
   const [featured, ...stories] = articles;
   return <main>
     <JsonLd data={[
-      breadcrumbSchema([{ name: 'Journal', path: '/blogs/' }]),
+      breadcrumbSchema(seo, [{ name: 'Journal', path: '/blogs/' }]),
       {
         '@context': 'https://schema.org',
         '@type': 'Blog',
         name: seo.pages.blogs.title,
         description: seo.pages.blogs.description,
-        url: absoluteUrl('/blogs/'),
-        publisher: { '@id': absoluteUrl('/#business') },
-        blogPost: articles.map(article => ({ '@type': 'BlogPosting', headline: article.title, description: article.excerpt, url: absoluteUrl(`/blogs/${article.slug}/`) })),
+        url: absoluteUrl(seo, '/blogs/'),
+        publisher: { '@id': absoluteUrl(seo, '/#business') },
+        blogPost: articles.map(article => ({ '@type': 'BlogPosting', headline: article.title, description: article.excerpt, url: absoluteUrl(seo, `/blogs/${article.slug}/`) })),
       },
     ]} />
     <section className="page-hero journal-hero"><div className="container">

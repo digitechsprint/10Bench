@@ -1,14 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { FormEvent, ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring } from 'framer-motion';
 import { ArrowRight, ArrowUp, ArrowUpRight, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { Magnetic, Reveal, ease, markIntroDone, useIntroDone } from './motion';
-import { contact } from './site-content';
+import { ContactProvider, useContact } from './contact-context';
+import type { Contact } from './site-content';
 
 export { Reveal } from './motion';
 
@@ -80,6 +81,7 @@ export function Intro() {
 }
 
 export function Header() {
+  const contact = useContact();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -153,6 +155,7 @@ export function Header() {
 }
 
 export function Footer() {
+  const contact = useContact();
   return <footer className="footer">
     <div className="footer-glow" aria-hidden="true" />
     <div className="container">
@@ -245,6 +248,7 @@ function Cursor() {
 }
 
 function WhatsAppButton() {
+  const contact = useContact();
   const ready = useIntroDone();
   return <motion.a
     className="wa-float"
@@ -264,6 +268,7 @@ function WhatsAppButton() {
 
 /** Phone-only bottom bar: the three actions a visitor on a phone most wants, always one tap away. */
 function MobileActionBar() {
+  const contact = useContact();
   return <nav className="mobile-bar" aria-label="Quick contact">
     <a href={contact.phoneHref}><Phone size={18} aria-hidden="true" />Call</a>
     <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer"><FaWhatsapp size={19} aria-hidden="true" />WhatsApp</a>
@@ -271,32 +276,61 @@ function MobileActionBar() {
   </nav>;
 }
 
-export function SiteShell({ children }: { children: ReactNode }) {
+export function SiteShell({ children, contact }: { children: ReactNode; contact: Contact }) {
   const pathname = usePathname();
-  if (pathname.startsWith('/admin')) return <>{children}</>;
-  return <div className="site-shell">
-    <Intro />
-    <ScrollProgress />
-    <Cursor />
-    <Header />
-    {children}
-    <Footer />
-    <WhatsAppButton />
-    <MobileActionBar />
-  </div>;
+  return <ContactProvider value={contact}>
+    {pathname.startsWith('/admin') ? children : <div className="site-shell">
+      <Intro />
+      <ScrollProgress />
+      <Cursor />
+      <Header />
+      {children}
+      <Footer />
+      <WhatsAppButton />
+      <MobileActionBar />
+    </div>}
+  </ContactProvider>;
 }
 
 export function ContactForm() {
+  const contact = useContact();
+  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [notice, setNotice] = useState('');
-  return <form className="contact-form" id="enquiry" onSubmit={event => { event.preventDefault(); setNotice(`This is a website preview: your message has not been sent or stored. Please email ${contact.email} or call ${contact.phone}.`); }}>
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setState('sending');
+    setNotice('');
+    try {
+      const response = await fetch('/api/enquiries/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...Object.fromEntries(new FormData(form)), page: window.location.pathname }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || 'Sorry, your enquiry could not be sent.');
+      form.reset();
+      setState('sent');
+      setNotice('Thank you! Your enquiry has reached the 10Bench team and they’ll be in touch.');
+    } catch (error) {
+      setState('error');
+      setNotice(`${(error as Error).message} You can also call ${contact.phone} or email ${contact.email}.`);
+    }
+  }
+
+  return <form className="contact-form" id="enquiry" onSubmit={submit}>
     <h2>Tell us what you’re looking for</h2>
     <div className="form-grid">
-      <div className="field"><label htmlFor="name">Your name</label><input id="name" name="name" autoComplete="name" required placeholder="Name" /></div>
-      <div className="field"><label htmlFor="email">Email address</label><input id="email" name="email" type="email" autoComplete="email" required placeholder="you@example.com" /></div>
+      <div className="field"><label htmlFor="name">Your name</label><input id="name" name="name" autoComplete="name" required maxLength={120} placeholder="Name" /></div>
+      <div className="field"><label htmlFor="phone">Phone <span className="field-optional">(optional)</span></label><input id="phone" name="phone" type="tel" autoComplete="tel" maxLength={30} placeholder="+91" /></div>
+      <div className="field full"><label htmlFor="email">Email address</label><input id="email" name="email" type="email" autoComplete="email" required maxLength={160} placeholder="you@example.com" /></div>
       <div className="field full"><label htmlFor="interest">What brings you to 10Bench?</label><select id="interest" name="interest" defaultValue=""><option value="" disabled>Choose an area of interest</option><option>Open desk</option><option>Dedicated desk</option><option>Private cabin for a team</option><option>Meeting room</option><option>Booking a visit</option><option>Something else</option></select></div>
-      <div className="field full"><label htmlFor="message">A little more about it</label><textarea id="message" name="message" required placeholder="Share what a good workspace would make possible for you." /></div>
+      <div className="field full"><label htmlFor="message">A little more about it</label><textarea id="message" name="message" required maxLength={3000} placeholder="Team size, when you’d like to start, anything you need." /></div>
+      {/* Honeypot: hidden from people, often filled in by spam bots. */}
+      <div className="field-trap" aria-hidden="true"><label htmlFor="company">Company</label><input id="company" name="company" tabIndex={-1} autoComplete="off" /></div>
     </div>
-    <Magnetic><button className="button form-submit" type="submit">Prepare enquiry <ArrowRight size={16} /></button></Magnetic>
-    <AnimatePresence>{notice && <motion.p className="form-feedback" role="status" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease }}>{notice}</motion.p>}</AnimatePresence>
+    <Magnetic><button className="button form-submit" type="submit" disabled={state === 'sending'}>{state === 'sending' ? 'Sending…' : 'Send enquiry'} <ArrowRight size={16} /></button></Magnetic>
+    <AnimatePresence>{notice && <motion.p key={state} className={`form-feedback is-${state}`} role="status" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease }}>{notice}</motion.p>}</AnimatePresence>
   </form>;
 }

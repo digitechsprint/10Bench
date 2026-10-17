@@ -3,10 +3,13 @@ import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, Check, MapPin, MessageCircle, Navigation, Phone } from 'lucide-react';
 import { HorizontalGallery, ImageReveal, Magnetic, Marquee, Reveal, RotatingBadge, ScrollWords, SplitText, Spotlight } from '../components/motion';
 import { AmenityIcon } from '../components/amenity-icon';
-import { amenities, audiences, contact, joinSteps, spaces } from '../components/site-content';
+import { amenities, audiences, buildContact, joinSteps, spaces } from '../components/site-content';
 import { pageMetadata } from '../lib/seo';
+import { getSeo } from '../lib/settings';
 
-export const metadata: Metadata = pageMetadata('home');
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getSeo(), 'home');
+}
 
 const galleryItems = [
   { src: '/images/workspace-lounge.jpeg', alt: 'Colorful lounge seating and coffee counter in the 10Bench coworking space', title: 'The breakout lounge', label: 'Reset & recharge' },
@@ -15,7 +18,8 @@ const galleryItems = [
   { src: '/images/workspace-floorplan.jpeg', alt: 'Isometric floor plan of the 10Bench coworking space', title: 'The full layout', label: 'Desks, cabins & more' },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const contact = buildContact((await getSeo()).business);
   return <main>
     <section className="hero hero-dark">
       <div className="hero-bg" aria-hidden="true"><span className="hero-orb" /><span className="hero-orb hero-orb-2" /><span className="hero-lines" /></div>

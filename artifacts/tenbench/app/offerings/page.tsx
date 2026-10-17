@@ -2,20 +2,25 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, Armchair, Check, DoorClosed, Laptop, MessageCircle, Presentation, UsersRound } from 'lucide-react';
 import { ImageReveal, Magnetic, Reveal, SplitText } from '../../components/motion';
-import { contact, spaces } from '../../components/site-content';
+import { buildContact, spaces } from '../../components/site-content';
 import { JsonLd } from '../../components/json-ld';
-import { breadcrumbSchema, faqSchema, pageMetadata, seo, serviceListSchema } from '../../lib/seo';
+import { breadcrumbSchema, faqSchema, pageMetadata, serviceListSchema } from '../../lib/seo';
+import { getSeo } from '../../lib/settings';
 
-export const metadata: Metadata = pageMetadata('offerings');
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getSeo(), 'offerings');
+}
 
 const spaceIcons = { 'open-desk': Laptop, 'dedicated-desk': Armchair, 'private-cabin': DoorClosed, 'meeting-room': Presentation };
 
-export default function OfferingsPage() {
+export default async function OfferingsPage() {
+  const seo = await getSeo();
+  const contact = buildContact(seo.business);
   return <main>
     <JsonLd data={[
-      breadcrumbSchema([{ name: 'Workspaces', path: '/offerings/' }]),
+      breadcrumbSchema(seo, [{ name: 'Workspaces', path: '/offerings/' }]),
       faqSchema(seo.faqs),
-      serviceListSchema(spaces.map(space => ({ name: space.name, description: space.text }))),
+      serviceListSchema(seo, spaces.map(space => ({ name: space.name, description: space.text }))),
     ]} />
     <section className="page-hero offering-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
       <Reveal y={16}><span className="eyebrow">Workspaces</span></Reveal>

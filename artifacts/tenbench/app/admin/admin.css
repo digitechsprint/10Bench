@@ -127,6 +127,36 @@
 .adm-faq-actions button:disabled { opacity: .35; cursor: default; }
 .adm-faq-actions button.is-danger:hover { border-color: var(--adm-bad); color: var(--adm-bad); }
 
+/* Storage indicator and nav badge */
+.adm-storage { display: flex; align-items: center; gap: 8px; margin: 0; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 600; }
+.adm-storage.is-supabase { background: #e6f3ea; color: #1f6b38; }
+.adm-storage.is-github, .adm-storage.is-local { background: #eef2fb; color: #2340b0; }
+.adm-storage.is-none { background: #fdf0dc; color: #8a520c; }
+.adm-badge { margin-left: auto; min-width: 22px; padding: 2px 7px; border-radius: 999px; background: white; color: var(--orange); font: 800 11px/1.4 var(--font-body); font-style: normal; text-align: center; }
+.adm-side nav button:not(.is-active) .adm-badge { background: var(--orange); color: white; }
+
+/* Enquiries */
+.adm-inbox-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+.adm-inbox-actions { display: flex; gap: 8px; }
+.adm-empty { justify-items: center; padding: 48px 24px; text-align: center; color: var(--adm-muted); }
+.adm-empty h2 { justify-content: center; color: var(--adm-text); }
+.adm-empty p { max-width: 520px; }
+.adm-enquiries { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; align-items: start; }
+.adm-enquiry { position: relative; gap: 12px; border-left: 4px solid var(--adm-line); }
+.adm-enquiry.is-new { border-left-color: var(--orange); }
+.adm-enquiry.is-contacted { border-left-color: var(--cobalt); }
+.adm-enquiry.is-closed { border-left-color: var(--adm-good); opacity: .85; }
+.adm-enquiry header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.adm-enquiry header strong { display: block; font: 700 17px var(--font-display); }
+.adm-enquiry header span { color: var(--adm-muted); font-size: 12px; }
+.adm-enquiry header select { width: auto; padding: 7px 10px; font-size: 13px; font-weight: 700; }
+.adm-enquiry-message { margin: 0; padding: 12px 14px; border-radius: 12px; background: #faf8f5; font-size: 14px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+.adm-enquiry-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.adm-enquiry-links a { display: inline-flex; align-items: center; gap: 6px; padding: 7px 11px; border: 1px solid var(--adm-line); border-radius: 999px; font-size: 12px; font-weight: 600; }
+.adm-enquiry-links a:hover { border-color: var(--orange); color: var(--orange); }
+.adm-enquiry-delete { justify-self: start; display: inline-flex; align-items: center; gap: 6px; padding: 0; border: 0; background: none; color: var(--adm-muted); font: 600 12px var(--font-body); cursor: pointer; }
+.adm-enquiry-delete:hover { color: var(--adm-bad); }
+
 @media (max-width: 1100px) {
   .adm-grid, .adm-overview { grid-template-columns: 1fr; }
 }

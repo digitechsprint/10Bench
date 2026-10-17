@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import seoData from '../content/seo.json';
 
-// All SEO / AEO / GEO settings live in content/seo.json and are edited from /admin.
+// SEO / AEO / GEO settings. Read them on the server with getSeo() from lib/settings.ts;
+// content/seo.json is the default used when nothing has been saved in Supabase yet.
 export type PageKey = 'home' | 'about' | 'offerings' | 'gallery' | 'blogs' | 'contact';
 export type PageSeo = { title: string; description: string; ogImage: string; noindex: boolean };
 export type Faq = { question: string; answer: string };
@@ -21,21 +22,35 @@ export type SeoSettings = {
   ai: { allowAiCrawlers: boolean; llmsIntro: string };
 };
 
-export const seo = seoData as SeoSettings;
+export const defaultSeo = seoData as SeoSettings;
+
+/** Fills any missing fields from the defaults, so older saved settings never break the site. */
+export function withDefaults(saved: Partial<SeoSettings> | null | undefined): SeoSettings {
+  const d = defaultSeo;
+  if (!saved) return d;
+  return {
+    site: { ...d.site, ...saved.site },
+    business: { ...d.business, ...saved.business },
+    pages: Object.fromEntries((Object.keys(d.pages) as PageKey[]).map(key => [key, { ...d.pages[key], ...saved.pages?.[key] }])) as SeoSettings['pages'],
+    faqs: Array.isArray(saved.faqs) ? saved.faqs : d.faqs,
+    aeo: { ...d.aeo, ...saved.aeo },
+    ai: { ...d.ai, ...saved.ai },
+  };
+}
 
 export const pagePaths: Record<PageKey, string> = { home: '/', about: '/about/', offerings: '/offerings/', gallery: '/gallery/', blogs: '/blogs/', contact: '/contact/' };
 
-export const siteUrl = () => seo.site.url.replace(/\/+$/, '');
-export const absoluteUrl = (path: string) => /^https?:\/\//.test(path) ? path : `${siteUrl()}${path.startsWith('/') ? path : `/${path}`}`;
-export const fullAddress = () => [seo.business.streetAddress, seo.business.locality, seo.business.region, seo.business.postalCode].filter(Boolean).join(', ');
+export const siteUrl = (s: SeoSettings) => s.site.url.replace(/\/+$/, '');
+export const absoluteUrl = (s: SeoSettings, path: string) => /^https?:\/\//.test(path) ? path : `${siteUrl(s)}${path.startsWith('/') ? path : `/${path}`}`;
+export const fullAddress = (s: SeoSettings) => [s.business.streetAddress, s.business.locality, s.business.region, s.business.postalCode].filter(Boolean).join(', ');
 
 /** Metadata for one of the main pages, built from the admin-editable settings. */
-export function pageMetadata(key: PageKey): Metadata {
-  const page = seo.pages[key];
+export function pageMetadata(s: SeoSettings, key: PageKey): Metadata {
+  const page = s.pages[key];
   const path = pagePaths[key];
-  const image = absoluteUrl(page.ogImage || seo.site.ogImage);
+  const image = absoluteUrl(s, page.ogImage || s.site.ogImage);
   return {
-    title: key === 'home' ? { absolute: `${page.title} | ${seo.site.name}` } : page.title,
+    title: key === 'home' ? { absolute: `${page.title} | ${s.site.name}` } : page.title,
     description: page.description,
     alternates: { canonical: path },
     robots: page.noindex ? { index: false, follow: true } : undefined,
@@ -46,18 +61,18 @@ export function pageMetadata(key: PageKey): Metadata {
 
 /* ---------- Structured data (JSON-LD) ---------- */
 
-export function businessSchema() {
-  const b = seo.business;
+export function businessSchema(s: SeoSettings) {
+  const b = s.business;
   const geo = b.latitude && b.longitude ? { '@type': 'GeoCoordinates', latitude: Number(b.latitude), longitude: Number(b.longitude) } : undefined;
   return {
     '@context': 'https://schema.org',
     '@type': b.type || 'LocalBusiness',
-    '@id': `${siteUrl()}/#business`,
+    '@id': `${siteUrl(s)}/#business`,
     name: b.name,
     description: b.description,
-    url: `${siteUrl()}/`,
-    logo: absoluteUrl(b.logo),
-    image: [absoluteUrl('/images/workspace-reception.jpeg'), absoluteUrl('/images/workspace-lounge.jpeg'), absoluteUrl('/images/workspace-meeting.jpeg')],
+    url: `${siteUrl(s)}/`,
+    logo: absoluteUrl(s, b.logo),
+    image: ['/images/workspace-reception.jpeg', '/images/workspace-lounge.jpeg', '/images/workspace-meeting.jpeg'].map(path => absoluteUrl(s, path)),
     telephone: b.phone,
     email: b.email,
     address: {
@@ -69,7 +84,7 @@ export function businessSchema() {
       addressCountry: b.country,
     },
     ...(geo ? { geo } : {}),
-    hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress())}`,
+    hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress(s))}`,
     areaServed: b.areaServed.map(name => ({ '@type': 'Place', name })),
     ...(b.openingHours.length ? { openingHours: b.openingHours } : {}),
     ...(b.priceRange ? { priceRange: b.priceRange } : {}),
@@ -78,20 +93,20 @@ export function businessSchema() {
   };
 }
 
-export function websiteSchema() {
+export function websiteSchema(s: SeoSettings) {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    '@id': `${siteUrl()}/#website`,
-    url: `${siteUrl()}/`,
-    name: seo.site.name,
-    description: seo.site.defaultDescription,
-    inLanguage: seo.site.locale.replace('_', '-'),
-    publisher: { '@id': `${siteUrl()}/#business` },
+    '@id': `${siteUrl(s)}/#website`,
+    url: `${siteUrl(s)}/`,
+    name: s.site.name,
+    description: s.site.defaultDescription,
+    inLanguage: s.site.locale.replace('_', '-'),
+    publisher: { '@id': `${siteUrl(s)}/#business` },
   };
 }
 
-export function faqSchema(faqs: Faq[] = seo.faqs) {
+export function faqSchema(faqs: Faq[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -99,22 +114,22 @@ export function faqSchema(faqs: Faq[] = seo.faqs) {
   };
 }
 
-export function breadcrumbSchema(items: { name: string; path: string }[]) {
+export function breadcrumbSchema(s: SeoSettings, items: { name: string; path: string }[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [{ name: 'Home', path: '/' }, ...items].map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: absoluteUrl(item.path) })),
+    itemListElement: [{ name: 'Home', path: '/' }, ...items].map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: absoluteUrl(s, item.path) })),
   };
 }
 
-export function serviceListSchema(services: { name: string; description: string }[]) {
+export function serviceListSchema(s: SeoSettings, services: { name: string; description: string }[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'OfferCatalog',
-    name: `Workspaces at ${seo.business.name}`,
+    name: `Workspaces at ${s.business.name}`,
     itemListElement: services.map(service => ({
       '@type': 'Offer',
-      itemOffered: { '@type': 'Service', name: service.name, description: service.description, provider: { '@id': `${siteUrl()}/#business` }, areaServed: seo.business.locality },
+      itemOffered: { '@type': 'Service', name: service.name, description: service.description, provider: { '@id': `${siteUrl(s)}/#business` }, areaServed: s.business.locality },
     })),
   };
 }
