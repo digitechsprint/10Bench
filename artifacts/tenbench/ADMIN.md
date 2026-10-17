@@ -15,7 +15,7 @@ The admin panel lives at **`/admin`** (for example `https://10-bench.vercel.app/
 
 | Setup | SEO settings | Enquiries |
 | --- | --- | --- |
-| **Supabase connected** (recommended) | `site_settings` table: changes go live within seconds | `enquiries` table |
+| **Supabase connected** (recommended) | `tenbench_settings` table: changes go live within seconds | `tenbench_enquiries` table |
 | GitHub token only | Committed to `content/seo.json`: Vercel redeploys (about a minute) | Not stored: the form asks visitors to call or WhatsApp |
 | Local development | Written to `content/seo.json` | Needs Supabase |
 
@@ -23,13 +23,16 @@ The admin panel lives at **`/admin`** (for example `https://10-bench.vercel.app/
 
 ## 1. Set up Supabase
 
-1. Create a project at [supabase.com](https://supabase.com) (the free plan is enough).
-2. Open **SQL Editor → New query**, paste the contents of [`supabase/schema.sql`](supabase/schema.sql) and click **Run**.
-   This creates the two tables with row-level security switched on and no public access.
-3. Open **Project Settings → API** (or **API Keys**) and copy:
-   - the **Project URL**
-   - the **service_role** key (or a **secret** key, `sb_secret_…`). Keep it private: it must only
-     ever go in server environment variables, never in code or the browser.
+10Bench uses the **same Supabase project as the Fovestta and Mysticz websites**
+(`oirbzenohjlmvaxwyflz.supabase.co`). Its tables are all prefixed `tenbench_`, so they never
+mix with the other sites' tables (that project already has its own `site_settings`, `faqs`, `leads`, etc.).
+
+1. Open that project in the Supabase dashboard.
+2. Go to **SQL Editor → New query**, paste the contents of [`supabase/schema.sql`](supabase/schema.sql) and click **Run**.
+   It only creates `tenbench_settings` and `tenbench_enquiries` (row-level security on, no public access)
+   and does not modify anything else.
+3. The URL and **service_role** key are the same values the Fovestta website uses. Keep the key private:
+   it must only ever go in server environment variables, never in code or the browser.
 
 ## 2. Add environment variables on Vercel
 
@@ -39,8 +42,8 @@ In the Vercel project, open **Settings → Environment Variables** and add:
 | --- | --- |
 | `ADMIN_PASSWORD` | A strong password for signing in to `/admin` |
 | `ADMIN_SESSION_SECRET` | A long random string (signs the login cookie) |
-| `SUPABASE_URL` | The Supabase Project URL, e.g. `https://abcd1234.supabase.co` |
-| `SUPABASE_SERVICE_ROLE_KEY` | The service_role / secret key |
+| `SUPABASE_URL` | `https://oirbzenohjlmvaxwyflz.supabase.co` (same as Fovestta) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Same service_role key as the Fovestta project's environment variables |
 
 Then redeploy (Deployments → ⋯ → Redeploy) so the variables take effect.
 

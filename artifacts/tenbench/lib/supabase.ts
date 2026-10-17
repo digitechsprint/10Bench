@@ -4,6 +4,10 @@ import 'server-only';
 // row-level security, so it must never reach the browser; RLS stays on with no public policies.
 export const supabaseConfigured = () => Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
 
+// The Supabase project is shared with other websites (Fovestta, Mysticz), which already have
+// tables such as site_settings, so every 10Bench table is prefixed to keep the data separate.
+export const TABLES = { settings: 'tenbench_settings', enquiries: 'tenbench_enquiries' } as const;
+
 type SupabaseInit = RequestInit & { next?: { tags?: string[]; revalidate?: number | false } };
 
 export async function supabaseRest<T = unknown>(path: string, init: SupabaseInit = {}): Promise<T> {

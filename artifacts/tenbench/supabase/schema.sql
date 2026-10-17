@@ -1,16 +1,17 @@
 -- 10Bench website: Supabase schema.
--- Run once in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
--- Safe to re-run.
+-- This Supabase project is shared with other websites (Fovestta, Mysticz), so every table here
+-- is prefixed with tenbench_ and nothing touches the other sites' tables.
+-- Run once in the Supabase dashboard: SQL Editor -> New query -> paste -> Run. Safe to re-run.
 
 -- SEO / AEO / GEO settings edited from /admin (a single row with id 'seo').
-create table if not exists public.site_settings (
+create table if not exists public.tenbench_settings (
   id text primary key,
   data jsonb not null,
   updated_at timestamptz not null default now()
 );
 
 -- Contact-form enquiries from the website.
-create table if not exists public.enquiries (
+create table if not exists public.tenbench_enquiries (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
   name text not null check (char_length(name) between 1 and 120),
@@ -23,10 +24,10 @@ create table if not exists public.enquiries (
   notes text check (char_length(notes) <= 2000)
 );
 
-create index if not exists enquiries_created_at_idx on public.enquiries (created_at desc);
-create index if not exists enquiries_status_idx on public.enquiries (status);
+create index if not exists tenbench_enquiries_created_at_idx on public.tenbench_enquiries (created_at desc);
+create index if not exists tenbench_enquiries_status_idx on public.tenbench_enquiries (status);
 
 -- Row-level security ON with no policies: the public (anon) key can neither read nor write.
--- Only the website's server, using the service-role key, can access these tables.
-alter table public.site_settings enable row level security;
-alter table public.enquiries enable row level security;
+-- Only the 10Bench server, using the service-role key, can access these tables.
+alter table public.tenbench_settings enable row level security;
+alter table public.tenbench_enquiries enable row level security;

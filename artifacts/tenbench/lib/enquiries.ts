@@ -1,5 +1,7 @@
 import 'server-only';
-import { supabaseRest } from './supabase';
+import { supabaseRest, TABLES } from './supabase';
+
+const table = TABLES.enquiries;
 
 export type EnquiryStatus = 'new' | 'contacted' | 'closed';
 export type Enquiry = {
@@ -26,11 +28,11 @@ export function parseEnquiry(input: Record<string, unknown>): { row?: Omit<Enqui
 }
 
 export const insertEnquiry = (row: NonNullable<ReturnType<typeof parseEnquiry>['row']>) =>
-  supabaseRest('enquiries', { method: 'POST', cache: 'no-store', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(row) });
+  supabaseRest(table, { method: 'POST', cache: 'no-store', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(row) });
 
 export async function listEnquiries(status?: string) {
   const filter = status && statuses.includes(status as EnquiryStatus) ? `&status=eq.${status}` : '';
-  return supabaseRest<Enquiry[]>(`enquiries?select=*&order=created_at.desc&limit=500${filter}`, { cache: 'no-store' });
+  return supabaseRest<Enquiry[]>(`${table}?select=*&order=created_at.desc&limit=500${filter}`, { cache: 'no-store' });
 }
 
 export async function updateEnquiry(id: string, changes: { status?: unknown; notes?: unknown }) {
@@ -38,10 +40,10 @@ export async function updateEnquiry(id: string, changes: { status?: unknown; not
   if (statuses.includes(changes.status as EnquiryStatus)) patch.status = changes.status as EnquiryStatus;
   if (typeof changes.notes === 'string') patch.notes = changes.notes.slice(0, 2000);
   if (!Object.keys(patch).length || !/^[0-9a-f-]{36}$/i.test(id)) throw new Error('Nothing to update.');
-  return supabaseRest<Enquiry[]>(`enquiries?id=eq.${id}&select=*`, { method: 'PATCH', cache: 'no-store', headers: { Prefer: 'return=representation' }, body: JSON.stringify(patch) });
+  return supabaseRest<Enquiry[]>(`${table}?id=eq.${id}&select=*`, { method: 'PATCH', cache: 'no-store', headers: { Prefer: 'return=representation' }, body: JSON.stringify(patch) });
 }
 
 export async function deleteEnquiry(id: string) {
   if (!/^[0-9a-f-]{36}$/i.test(id)) throw new Error('Invalid enquiry.');
-  return supabaseRest(`enquiries?id=eq.${id}`, { method: 'DELETE', cache: 'no-store' });
+  return supabaseRest(`${table}?id=eq.${id}`, { method: 'DELETE', cache: 'no-store' });
 }
