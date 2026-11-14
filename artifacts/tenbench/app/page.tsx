@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Armchair, ArrowRight, ArrowUpRight, IndianRupee, MapPin, MessageCircle, Navigation, Phone, Presentation } from 'lucide-react';
+import { Armchair, ArrowRight, ArrowUpRight, BookOpen, Coffee, IndianRupee, MapPin, MessageCircle, Navigation, Phone, Presentation, Sofa } from 'lucide-react';
 import { HorizontalGallery, ImageReveal, Magnetic, Marquee, Reveal, RotatingBadge, SplitText, Spotlight } from '../components/motion';
 import { AmenityIcon } from '../components/amenity-icon';
 import { amenities, audiences, buildContact, joinSteps, spaces } from '../components/site-content';
@@ -15,6 +15,12 @@ const whyReasons = [
   { icon: IndianRupee, title: 'Simple monthly pricing', text: '' }, // filled from the live pricing
   { icon: Presentation, title: 'Meeting room on site', text: 'Impress clients in a room with a big presentation screen.' },
   { icon: MapPin, title: 'A Vaishali address', text: 'Easy to reach from Ghaziabad, Noida and East Delhi.' },
+];
+
+const loungeFeatures = [
+  { icon: Coffee, title: 'Coffee counter', text: 'A proper coffee machine for your next refill.' },
+  { icon: Sofa, title: 'Breakout seating', text: 'Bright armchairs for a reset or a quick chat.' },
+  { icon: BookOpen, title: 'Reading shelf', text: 'A warm corner to pause between tasks.' },
 ];
 
 // Freelancers, startups, remote employees, client-facing pros (same order as `audiences`).
@@ -131,13 +137,28 @@ export default async function HomePage() {
       </div>
     </section>
 
-    <section className="image-story">
-      <ImageReveal className="image-story-visual" src="/images/workspace-lounge.jpeg" alt="Bright lounge at 10Bench with colorful chairs arranged around a shared coffee counter" />
-      <div className="image-story-copy">
-        <Reveal><span className="eyebrow">The lounge</span></Reveal>
-        <SplitText className="display">Colour, coffee and a <span className="editorial">change of pace.</span></SplitText>
-        <Reveal delay={0.2}><p>Step away from the screen without leaving the building. Grab a coffee, sink into a bright armchair, and let your next idea arrive. Great work needs good breaks.</p></Reveal>
-        <Reveal delay={0.3}><Magnetic><Link className="button" href="/gallery">Take the tour <ArrowRight size={16} /></Link></Magnetic></Reveal>
+    <section className="section-pad lounge-section">
+      <div className="lounge-glow" aria-hidden="true" />
+      <div className="container lounge-grid">
+        <div className="lounge-media">
+          <ImageReveal className="lounge-photo-main" src={photos.lounge.src} alt={photos.lounge.alt} cursor="" />
+          <div className="lounge-thumbs">
+            <ImageReveal className="lounge-thumb" src={photos.coffee.src} alt={photos.coffee.alt} crop={photos.coffee.crop} parallax={false} delay={0.1} cursor="" />
+            <ImageReveal className="lounge-thumb" src={photos.loungeChairs.src} alt={photos.loungeChairs.alt} crop={photos.loungeChairs.crop} parallax={false} delay={0.2} cursor="" />
+          </div>
+        </div>
+        <div className="lounge-copy">
+          <Reveal><span className="eyebrow">The lounge</span></Reveal>
+          <SplitText className="display">Colour, coffee and <span className="editorial">a change of pace.</span></SplitText>
+          <Reveal delay={0.15}><p>Step away from the screen without leaving the building. Grab a coffee, sink into a bright armchair and let your next idea arrive.</p></Reveal>
+          <ul className="lounge-features">
+            {loungeFeatures.map(({ icon: Icon, title, text }, index) => <Reveal key={title} delay={0.2 + index * 0.07}><li>
+              <span className="lounge-feature-icon"><Icon size={18} strokeWidth={1.8} /></span>
+              <div><strong>{title}</strong><span>{text}</span></div>
+            </li></Reveal>)}
+          </ul>
+          <Reveal delay={0.4}><Magnetic><Link className="button" href="/gallery">Take the tour <ArrowRight size={16} /></Link></Magnetic></Reveal>
+        </div>
       </div>
     </section>
 

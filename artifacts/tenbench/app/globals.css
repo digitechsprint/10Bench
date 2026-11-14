@@ -1014,6 +1014,29 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--tone); }
 .manifesto-lead { max-width: 460px; margin: 0; color: var(--muted); font-size: 17px; line-height: 1.75; }
 .manifesto-grid { align-items: center; }
 
+/* The lounge */
+.lounge-section { position: relative; overflow: hidden; background: var(--navy-deep); color: white; }
+.lounge-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(45% 60% at 0% 0%, rgba(244,123,32,.2), transparent 70%), radial-gradient(40% 55% at 100% 100%, rgba(45,79,214,.22), transparent 70%); }
+.lounge-grid { position: relative; display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(40px, 5vw, 80px); align-items: center; }
+.lounge-media { display: grid; gap: 14px; }
+.lounge-photo-main { height: clamp(300px, 30vw, 440px); border-radius: 28px; }
+.lounge-thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.lounge-thumb { height: clamp(130px, 12vw, 180px); border-radius: 20px; }
+.lounge-copy .eyebrow { color: #ffb072; }
+.lounge-copy h2 { max-width: 520px; margin: 16px 0 18px; font-size: clamp(36px, 3.8vw, 56px); }
+.lounge-copy > div > p { max-width: 460px; margin: 0; color: #c3cfda; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.75; }
+.lounge-features { list-style: none; display: grid; gap: 10px; margin: 28px 0 32px; padding: 0; }
+.lounge-features li { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; background: rgba(255,255,255,.04); }
+.lounge-feature-icon { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 12px; background: rgba(244,123,32,.16); color: #ffb072; }
+.lounge-features strong { display: block; font: 700 16px var(--font-display); letter-spacing: -.01em; }
+.lounge-features li span:not(.lounge-feature-icon) { display: block; margin-top: 2px; color: #a9b7c4; font-size: 13px; }
+@media (max-width: 1000px) { .lounge-grid { grid-template-columns: 1fr; } }
+@media (max-width: 600px) {
+  .lounge-photo-main { height: 240px; border-radius: 20px; }
+  .lounge-thumb { height: 110px; border-radius: 14px; }
+  .lounge-thumbs, .lounge-media { gap: 10px; }
+}
+
 /* Why 10Bench */
 .why-section { background: var(--paper); }
 .why-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(40px, 5vw, 80px); align-items: center; }
