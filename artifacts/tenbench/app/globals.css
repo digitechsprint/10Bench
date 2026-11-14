@@ -628,7 +628,7 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--tone); }
 
 /* ---------- Route-specific storytelling ---------- */
 .about-hero { padding-bottom: 76px; }
-.about-hero-foot { display: flex; align-items: center; gap: 15px; margin-top: 48px; color: var(--navy); font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.about-hero-foot { display: flex; align-items: center; gap: 15px; margin-top: 32px; color: var(--navy); font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
 .about-hero-foot i { width: 28px; height: 1px; background: var(--orange); }
 .about-belief { overflow: hidden; padding: 120px 0; background: var(--orange-soft); }
 .about-belief-inner { position: relative; }
@@ -1011,12 +1011,13 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--tone); }
 }
 
 /* ---------- Photo-led layouts and pricing ---------- */
+.page-hero.has-media { padding: clamp(32px, 3.5vw, 56px) 0 clamp(36px, 4vw, 60px); }
 .page-hero.has-media .container { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(32px, 4vw, 64px); align-items: center; }
 .page-hero.has-media h1 { font-size: clamp(40px, 4.4vw, 68px); }
-.page-hero-copy p { max-width: 520px; }
+.page-hero-copy p { max-width: 520px; font-size: clamp(16px, 1.2vw, 18px); }
 .hero-price { margin: 4px 0 0; color: var(--navy) !important; font-size: 18px !important; }
 .hero-price strong { color: var(--orange); font: 800 28px var(--font-display); letter-spacing: -.02em; }
-.hero-collage { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1.65fr 1fr; gap: 12px; height: clamp(380px, 36vw, 540px); }
+.hero-collage { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1.7fr 1fr; gap: 12px; height: clamp(320px, 28vw, 460px); }
 .hero-collage.is-single { grid-template-columns: 1fr; grid-template-rows: 1fr; }
 .hero-collage-main { grid-column: 1 / -1; border-radius: 24px; }
 .hero-collage-side { border-radius: 18px; }
