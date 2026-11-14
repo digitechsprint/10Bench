@@ -37,15 +37,6 @@ export const spaces: { id: string; name: string; tag: string; tone: Tone; text: 
     points: ['Shared work area', 'Lounge and coffee counter access', 'Come in, plug in, get going'],
   },
   {
-    id: 'dedicated-desk',
-    name: 'Dedicated desks',
-    tag: 'Your own spot',
-    tone: 'leaf',
-    text: 'The same desk every day, set up exactly how you like it. All the routine of an office, none of the overheads.',
-    ideal: 'Consultants, creators and regulars who like a fixed base',
-    points: ['A desk that stays yours', 'Leave your setup in place', 'Shared amenities included'],
-  },
-  {
     id: 'private-cabin',
     name: 'Private cabins',
     tag: 'For teams',

@@ -34,7 +34,7 @@ export default async function OfferingsPage() {
           <div className="hero-chips"><a href="#pricing" className="chip tone-orange"><i />See prices</a>{spaces.map(space => <a key={space.id} href={`#${space.id}`} className={`chip tone-${space.tone}`}><i />{space.name}</a>)}</div>
         </Reveal>
       </div>
-      <HeroCollage main={photos.meeting} side={[photos.cabins, photos.coffee]} caption="The meeting room" />
+      <HeroCollage main={photos.meeting} side={[photos.cabinTeam, photos.coffee]} caption="The meeting room" />
     </div></section>
 
     <section id="pricing" className="section-pad pricing-section"><div className="container">
@@ -51,7 +51,7 @@ export default async function OfferingsPage() {
       <div className="section-head">
         <div><Reveal><span className="eyebrow">Choose your setting</span></Reveal><SplitText className="display">Every way <span className="editorial">to work.</span></SplitText></div>
       </div>
-      <div className="space-photo-grid">{spaces.map((space, index) => {
+      <div className="space-photo-grid is-three">{spaces.map((space, index) => {
         const photo = spacePhotos[space.id] ?? photos.lounge;
         return <Reveal key={space.id} delay={index * 0.08} className={`space-photo-card tone-${space.tone}`}>
           <div id={space.id} className="space-anchor" />

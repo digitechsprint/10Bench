@@ -13,15 +13,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const principles = [
-  { title: 'Focus deserves a home', text: 'Room to concentrate, with the essentials close at hand.', photo: photos.cabins },
+  { title: 'Focus deserves a home', text: 'Room to concentrate, with the essentials close at hand.', photo: photos.cabinTeam },
   { title: 'Good work is human', text: 'Space for a hello, a shared idea and a coffee.', photo: photos.coffee },
-  { title: 'No one way to work', text: 'Solo or as a team, there’s a setting that fits.', photo: photos.openDesks },
+  { title: 'No one way to work', text: 'Solo or as a team, there’s a setting that fits.', photo: photos.openDeskArea },
 ];
 
 const steps = [
   { title: 'Tell us what you need', photo: photos.receptionDesk },
   { title: 'Come and see the space', photo: photos.loungeChairs },
-  { title: 'Move in and get going', photo: photos.cabins },
+  { title: 'Move in and get going', photo: photos.cabinTeam },
 ];
 
 export default async function AboutPage() {

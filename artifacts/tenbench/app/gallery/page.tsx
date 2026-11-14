@@ -16,6 +16,9 @@ const tour = [
   { src: '/images/workspace-lounge.jpeg', alt: 'A bright lounge with bold colorful chairs, plants, and a shared counter', label: 'The lounge', title: 'A change of pace', text: 'right in the flow of the day.' },
   { src: '/images/workspace-reception.jpeg', alt: '10Bench reception with welcoming wood finishes and glass partitions', label: 'Reception', title: 'A warm welcome', text: 'into the space.' },
   { src: '/images/workspace-meeting.jpeg', alt: 'Meeting room at 10Bench featuring a long table and presentation display', label: 'Meeting room', title: 'Bring a conversation', text: 'into focus.' },
+  { src: '/images/open-desks.jpg', alt: 'Open coworking desks with monitors and mesh chairs at 10Bench', label: 'Open desks', title: 'Plug in', text: 'and get going.' },
+  { src: '/images/cabin-compact.jpg', alt: 'Compact glass-fronted private cabin at 10Bench', label: 'Compact cabin', title: 'A room of your own', text: 'for a small team.' },
+  { src: '/images/cabin-large.jpg', alt: 'Large private cabin at 10Bench with workstations for a bigger team', label: 'Large cabin', title: 'Space to grow', text: 'for bigger teams.' },
 ];
 
 export default async function GalleryPage() {
@@ -39,7 +42,7 @@ export default async function GalleryPage() {
       <HeroCollage main={photos.lounge} side={[photos.reception, photos.meeting]} caption="The breakout lounge" />
     </div></section>
     <section className="detail-strip"><div className="container detail-grid">
-      {[photos.coffee, photos.receptionSign, photos.cabins, photos.meetingScreen, photos.loungeChairs].map((photo, index) => <ImageReveal key={photo.alt} className="detail-tile" src={photo.src} alt={photo.alt} crop={photo.crop} parallax={false} delay={index * 0.06} cursor="" />)}
+      {[photos.coffee, photos.receptionSign, photos.cabinTeam, photos.meetingScreen, photos.loungeChairs].map((photo, index) => <ImageReveal key={photo.alt} className="detail-tile" src={photo.src} alt={photo.alt} crop={photo.crop} parallax={false} delay={index * 0.06} cursor="" />)}
     </div></section>
     <section className="section-pad">
       <div className="container tour-intro">

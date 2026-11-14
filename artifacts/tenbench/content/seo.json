@@ -4,7 +4,7 @@
     "url": "https://10bench.in",
     "titleTemplate": "%s | 10Bench Coworking",
     "defaultTitle": "10Bench Coworking Spaces | Coworking in Vaishali, Ghaziabad",
-    "defaultDescription": "Open desks, dedicated desks, private cabins and a meeting room in Sector 4, Vaishali, Ghaziabad. Book a visit to 10Bench Coworking today.",
+    "defaultDescription": "Open desks, private cabins and a meeting room in Sector 4, Vaishali, Ghaziabad. Book a visit to 10Bench Coworking today.",
     "keywords": [
       "coworking space Vaishali",
       "coworking Ghaziabad",
@@ -23,7 +23,7 @@
   "business": {
     "name": "10Bench Coworking Spaces",
     "type": "CoworkingSpace",
-    "description": "10Bench is a coworking space in Sector 4, Vaishali, Ghaziabad offering open desks, dedicated desks, private cabins for teams and a meeting room with a presentation screen, plus a breakout lounge and coffee counter.",
+    "description": "10Bench is a coworking space in Sector 4, Vaishali, Ghaziabad offering open desks, private cabins for teams and a meeting room with a presentation screen, plus a breakout lounge and coffee counter.",
     "phone": "+91 97739 87782",
     "email": "spaces@10bench.in",
     "whatsapp": "919773987782",
@@ -50,7 +50,7 @@
   "pages": {
     "home": {
       "title": "Coworking Space in Vaishali, Ghaziabad",
-      "description": "Open desks, dedicated desks, private cabins and a meeting room in Sector 4, Vaishali, Ghaziabad. Book a visit to 10Bench Coworking today.",
+      "description": "Open desks, private cabins and a meeting room in Sector 4, Vaishali, Ghaziabad. Book a visit to 10Bench Coworking today.",
       "ogImage": "",
       "noindex": false
     },
@@ -62,7 +62,7 @@
     },
     "offerings": {
       "title": "Open Desks, Private Cabins & Meeting Room",
-      "description": "Compare open desks, dedicated desks, private cabins and a meeting room at 10Bench in Vaishali, Ghaziabad. Ask us for pricing.",
+      "description": "Compare open desks, private cabins and a meeting room at 10Bench in Vaishali, Ghaziabad, with simple monthly prices.",
       "ogImage": "/images/workspace-meeting.jpeg",
       "noindex": false
     },
@@ -92,7 +92,7 @@
     },
     {
       "question": "What kinds of workspace does 10Bench offer?",
-      "answer": "10Bench offers open desks, dedicated desks, private cabins for teams and a meeting room with a presentation screen. Every space includes access to the breakout lounge and coffee counter."
+      "answer": "10Bench offers open desks, private cabins for teams and a meeting room with a presentation screen. Every space includes access to the breakout lounge and coffee counter."
     },
     {
       "question": "Can I visit before I decide?",
@@ -112,10 +112,10 @@
     }
   ],
   "aeo": {
-    "summary": "10Bench Coworking Spaces is a coworking space at 116, Sector 4, Vaishali, Ghaziabad, Uttar Pradesh, India. It offers open desks, dedicated desks, private cabins for teams and a meeting room with a presentation screen, along with a breakout lounge, a coffee counter and a front-desk reception. A coworking seat costs ₹5,000 per month and private cabins start at ₹16,000 per month plus GST. It serves freelancers, startups, remote employees and small teams across Ghaziabad, Noida and East Delhi. Contact: +91 97739 87782, spaces@10bench.in.",
+    "summary": "10Bench Coworking Spaces is a coworking space at 116, Sector 4, Vaishali, Ghaziabad, Uttar Pradesh, India. It offers open desks, private cabins for teams and a meeting room with a presentation screen, along with a breakout lounge, a coffee counter and a front-desk reception. A coworking seat costs ₹5,000 per month and private cabins start at ₹16,000 per month plus GST. It serves freelancers, startups, remote employees and small teams across Ghaziabad, Noida and East Delhi. Contact: +91 97739 87782, spaces@10bench.in.",
     "keyFacts": [
       "Location: 116, Sector 4, Vaishali, Ghaziabad, Uttar Pradesh",
-      "Workspaces: open desks, dedicated desks, private cabins and a meeting room",
+      "Workspaces: open desks, private cabins and a meeting room",
       "Pricing: coworking seat ₹5,000 per month; private cabins ₹16,000 to ₹30,000 per month + GST",
       "Meeting room: long table and presentation screen",
       "Shared amenities: breakout lounge, coffee counter and front-desk reception",

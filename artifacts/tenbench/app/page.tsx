@@ -18,7 +18,7 @@ const whyReasons = [
 ];
 
 // Freelancers, startups, remote employees, client-facing pros (same order as `audiences`).
-const audiencePhotos: Photo[] = [photos.openDesks, photos.cabins, photos.loungeChairs, photos.meeting];
+const audiencePhotos: Photo[] = [photos.openDeskArea, photos.cabinTeam, photos.loungeChairs, photos.meeting];
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata(await getSeo(), 'home');
@@ -26,6 +26,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const galleryItems = [
   { src: '/images/workspace-lounge.jpeg', alt: 'Colorful lounge seating and coffee counter in the 10Bench coworking space', title: 'The breakout lounge', label: 'Reset & recharge' },
+  { src: '/images/open-desks.jpg', alt: 'Open coworking desks with monitors at 10Bench', title: 'The open desks', label: 'Plug in & focus' },
+  { src: '/images/cabin-team.jpg', alt: 'Glass-walled team cabin at 10Bench with a row of workstations', title: 'The private cabins', label: 'Room for your team' },
   { src: '/images/workspace-meeting.jpeg', alt: 'Meeting room at 10Bench with a long wood table and presentation screen', title: 'The meeting room', label: 'Present & decide' },
   { src: '/images/workspace-reception.jpeg', alt: 'The 10Bench welcome desk behind a black geometric screen', title: 'The reception', label: 'Arrive in style' },
   { src: '/images/workspace-floorplan.jpeg', alt: 'Isometric floor plan of the 10Bench coworking space', title: 'The full layout', label: 'Desks, cabins & more' },
@@ -94,7 +96,7 @@ export default async function HomePage() {
           <div><Reveal><span className="eyebrow">Ways to work</span></Reveal><SplitText className="display">Pick the space that <span className="editorial">fits your day.</span></SplitText></div>
           <Reveal delay={0.15}><p>From a single seat to a private cabin for your whole team, there’s a setup for every stage of your work.</p><Link href="/offerings" className="text-link">Compare all spaces <ArrowRight size={15} /></Link></Reveal>
         </div>
-        <div className="space-photo-grid is-four">
+        <div className="space-photo-grid is-three">
           {spaces.map((space, index) => {
             const photo = spacePhotos[space.id] ?? photos.lounge;
             return <Reveal key={space.id} delay={index * 0.08} className={`space-photo-card tone-${space.tone}`}>
