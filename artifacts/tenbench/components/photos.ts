@@ -27,6 +27,8 @@ export const photos = {
   cabins: { src: floorplan, alt: 'Row of private team cabins with desks and monitors on the 10Bench floor plan', crop: { x: 62, y: 42, zoom: 2.6 } },
   cabinsLeft: { src: floorplan, alt: 'Private cabins with workstations along the glass wall of the 10Bench floor plan', crop: { x: 38, y: 60, zoom: 2.4 } },
   cabinsBottom: { src: floorplan, alt: 'Private cabins with desks for small teams on the 10Bench floor plan', crop: { x: 56, y: 80, zoom: 2.5 } },
+  cabinRow: { src: lounge, alt: 'Row of glass-fronted private cabins with wooden frames along the 10Bench corridor', crop: { x: 12, y: 38, zoom: 2.3 } },
+  cabinsWide: { src: floorplan, alt: 'Private cabins of different sizes on the 10Bench floor plan', crop: { x: 60, y: 44, zoom: 2.1 } },
   meetingPlan: { src: floorplan, alt: 'The meeting room and reception area on the 10Bench floor plan', crop: { x: 61, y: 22, zoom: 2.6 } },
 } satisfies Record<string, Photo>;
 

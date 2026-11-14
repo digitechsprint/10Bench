@@ -4,14 +4,14 @@ import { ImageReveal, Reveal } from './motion';
 import { photos, type Photo } from './photos';
 import { formatRupees, type SeoSettings } from '../lib/seo';
 
-// A photo for each plan: seats show the open desks, cabins show the glass cabins and cabin rows.
+// A real photo for each plan: the shared lounge for seats, the glass cabins and cabin layout for cabins.
 const planPhotos: Record<string, Photo> = {
-  seat: photos.openDesks,
-  'cabin-compact': photos.cabinsBottom,
-  'cabin-standard': photos.cabins,
-  'cabin-large': photos.cabinsLeft,
+  seat: photos.lounge,
+  'cabin-compact': photos.cabinRow,
+  'cabin-standard': photos.cabinsWide,
+  'cabin-large': photos.glassCabins,
 };
-const fallbacks = [photos.openDesks, photos.cabinsBottom, photos.cabins, photos.cabinsLeft, photos.lounge];
+const fallbacks = [photos.lounge, photos.cabinRow, photos.cabinsWide, photos.glassCabins, photos.meeting];
 
 export function PricingCards({ pricing }: { pricing: SeoSettings['pricing'] }) {
   return <>

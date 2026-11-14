@@ -45,7 +45,7 @@ export default async function AboutPage() {
         <Reveal delay={0.15}><p>Some days need quiet focus, others need company. 10Bench gives you both under one roof: warm wood, glass-fronted cabins and a lounge full of colour.</p><Link className="text-link" href="/offerings">See how you could work here <ArrowRight size={15} /></Link></Reveal>
       </div>
       <div className="photo-pair">
-        <ImageReveal className="photo-pair-tall" src={photos.receptionSign.src} alt={photos.receptionSign.alt} crop={photos.receptionSign.crop} />
+        <ImageReveal className="photo-pair-tall" src={photos.meeting.src} alt={photos.meeting.alt} />
         <ImageReveal className="photo-pair-short" src={photos.loungeChairs.src} alt={photos.loungeChairs.alt} crop={photos.loungeChairs.crop} parallax={false} delay={0.15} />
       </div>
     </div></section>

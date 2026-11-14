@@ -1,14 +1,21 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, Check, MapPin, MessageCircle, Navigation, Phone } from 'lucide-react';
+import { Armchair, ArrowRight, ArrowUpRight, IndianRupee, MapPin, MessageCircle, Navigation, Phone, Presentation } from 'lucide-react';
 import { HorizontalGallery, ImageReveal, Magnetic, Marquee, Reveal, RotatingBadge, SplitText, Spotlight } from '../components/motion';
 import { AmenityIcon } from '../components/amenity-icon';
 import { amenities, audiences, buildContact, joinSteps, spaces } from '../components/site-content';
 import { JsonLd } from '../components/json-ld';
 import { PricingCards } from '../components/pricing';
 import { photos, spacePhotos, type Photo } from '../components/photos';
-import { pageMetadata, pricingSchema } from '../lib/seo';
+import { formatRupees, pageMetadata, pricingSchema } from '../lib/seo';
 import { getSeo } from '../lib/settings';
+
+const whyReasons = [
+  { icon: Armchair, title: 'Ready to use', text: 'Furnished desks and private cabins, so there’s nothing to set up.' },
+  { icon: IndianRupee, title: 'Simple monthly pricing', text: '' }, // filled from the live pricing
+  { icon: Presentation, title: 'Meeting room on site', text: 'Impress clients in a room with a big presentation screen.' },
+  { icon: MapPin, title: 'A Vaishali address', text: 'Easy to reach from Ghaziabad, Noida and East Delhi.' },
+];
 
 // Freelancers, startups, remote employees, client-facing pros (same order as `audiences`).
 const audiencePhotos: Photo[] = [photos.openDesks, photos.cabins, photos.loungeChairs, photos.meeting];
@@ -27,6 +34,7 @@ const galleryItems = [
 export default async function HomePage() {
   const seo = await getSeo();
   const contact = buildContact(seo.business);
+  const lowestPrice = Math.min(...seo.pricing.plans.map(plan => plan.price));
   return <main>
     <JsonLd data={pricingSchema(seo)} />
     <section className="hero hero-dark">
@@ -64,12 +72,17 @@ export default async function HomePage() {
       <div className="container manifesto-grid">
         <div className="manifesto-head">
           <Reveal><span className="eyebrow">Why 10Bench</span></Reveal>
-          <SplitText className="display">Not just a desk. <span className="editorial">A better workday.</span></SplitText>
-          <Reveal delay={0.15}><p className="manifesto-lead">Home blurs every line, cafés are loud and long leases tie you down. 10Bench is a professional base that feels good to walk into.</p></Reveal>
-          <Reveal delay={0.2}><div className="manifesto-tag">Focus · Meet · Recharge — all under one roof</div></Reveal>
+          <SplitText className="display">Walk in ready. <span className="editorial">Get straight to work.</span></SplitText>
+          <Reveal delay={0.15}><p className="manifesto-lead">A professional office in Sector 4, Vaishali, without the cost or commitment of leasing your own.</p></Reveal>
+          <ul className="why-list">
+            {whyReasons.map(({ icon: Icon, title, text }, index) => <Reveal key={title} delay={0.2 + index * 0.06}><li>
+              <span className="why-icon"><Icon size={19} strokeWidth={1.8} /></span>
+              <div><strong>{title}</strong><span>{text || `Plans from ${formatRupees(lowestPrice)} a month, with no long lease.`}</span></div>
+            </li></Reveal>)}
+          </ul>
         </div>
         <div className="photo-pair">
-          <ImageReveal className="photo-pair-tall" src={photos.receptionSign.src} alt={photos.receptionSign.alt} crop={photos.receptionSign.crop} />
+          <ImageReveal className="photo-pair-tall" src={photos.reception.src} alt={photos.reception.alt} />
           <ImageReveal className="photo-pair-short" src={photos.coffee.src} alt={photos.coffee.alt} crop={photos.coffee.crop} parallax={false} delay={0.15} />
         </div>
       </div>
