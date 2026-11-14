@@ -35,7 +35,7 @@ export default async function AboutPage() {
         <Reveal delay={0.45}><p>A warm, well-designed coworking space in Sector 4, Vaishali, made for focus, good company and a day at your own pace.</p></Reveal>
         <Reveal delay={0.6} className="about-hero-foot"><span>Room to focus</span><i /><span>Space to connect</span><i /><span>Your own pace</span></Reveal>
       </div>
-      <HeroCollage main={photos.reception} side={[photos.lounge, photos.coffee]} caption="The 10Bench reception" />
+      <HeroCollage main={photos.reception} side={[photos.openDeskArea, photos.cabinTeam]} caption="The 10Bench reception" />
     </div></section>
 
     <section className="section-pad"><div className="container about-intro">
@@ -46,7 +46,7 @@ export default async function AboutPage() {
       </div>
       <div className="photo-pair">
         <ImageReveal className="photo-pair-tall" src={photos.meeting.src} alt={photos.meeting.alt} />
-        <ImageReveal className="photo-pair-short" src={photos.loungeChairs.src} alt={photos.loungeChairs.alt} crop={photos.loungeChairs.crop} parallax={false} delay={0.15} />
+        <ImageReveal className="photo-pair-short" src={photos.cabinCompact.src} alt={photos.cabinCompact.alt} parallax={false} delay={0.15} />
       </div>
     </div></section>
 
@@ -60,7 +60,7 @@ export default async function AboutPage() {
     </div></section>
 
     <section className="photo-band">
-      <ImageReveal className="photo-band-image" src={photos.lounge.src} alt={photos.lounge.alt} cursor="" />
+      <ImageReveal className="photo-band-image" src={photos.openDeskArea.src} alt={photos.openDeskArea.alt} cursor="" />
       <div className="photo-band-overlay"><div className="container">
         <Reveal><span className="eyebrow">The simple idea</span></Reveal>
         <SplitText className="display">A better workday isn’t one-size-fits-all. <span className="editorial">Your space shouldn’t be either.</span></SplitText>
@@ -100,7 +100,7 @@ export default async function AboutPage() {
       </div>
       <div className="container about-mosaic">
         <ImageReveal className="about-mosaic-a" src={photos.lounge.src} alt={photos.lounge.alt}><span className="about-image-caption">The breakout lounge</span></ImageReveal>
-        <ImageReveal className="about-mosaic-b" src={photos.meeting.src} alt={photos.meeting.alt} parallax={false} delay={0.1}><span className="about-image-caption">The meeting room</span></ImageReveal>
+        <ImageReveal className="about-mosaic-b" src={photos.cabinLarge.src} alt={photos.cabinLarge.alt} parallax={false} delay={0.1}><span className="about-image-caption">Private cabins</span></ImageReveal>
         <ImageReveal className="about-mosaic-c" src={photos.reception.src} alt={photos.reception.alt} parallax={false} delay={0.2}><span className="about-image-caption">Reception</span></ImageReveal>
       </div>
     </section>
