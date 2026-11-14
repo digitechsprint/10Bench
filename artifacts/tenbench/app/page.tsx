@@ -70,23 +70,30 @@ export default async function HomePage() {
 
     <Marquee items={['Focus', 'Meet', 'Collaborate', 'Recharge', 'Build', 'Grow']} />
 
-    <section className="section-pad manifesto">
-      <div className="container manifesto-grid">
-        <div className="manifesto-head">
-          <Reveal><span className="eyebrow">Why 10Bench</span></Reveal>
-          <SplitText className="display">Walk in ready. <span className="editorial">Get straight to work.</span></SplitText>
-          <Reveal delay={0.15}><p className="manifesto-lead">A professional office in Sector 4, Vaishali, without the cost or commitment of leasing your own.</p></Reveal>
-          <ul className="why-list">
-            {whyReasons.map(({ icon: Icon, title, text }, index) => <Reveal key={title} delay={0.2 + index * 0.06}><li>
-              <span className="why-icon"><Icon size={19} strokeWidth={1.8} /></span>
-              <div><strong>{title}</strong><span>{text || `Plans from ${formatRupees(lowestPrice)} a month, with no long lease.`}</span></div>
-            </li></Reveal>)}
-          </ul>
+    <section className="section-pad why-section">
+      <div className="container">
+        <div className="why-grid">
+          <div className="why-copy">
+            <Reveal><span className="eyebrow">Why 10Bench</span></Reveal>
+            <SplitText className="display">Walk in ready. <span className="editorial">Get straight to work.</span></SplitText>
+            <Reveal delay={0.15}><p className="why-lead">A professional office in Sector 4, Vaishali, without the cost or commitment of leasing your own. Desks, cabins and a meeting room, ready when you are.</p></Reveal>
+            <Reveal delay={0.25} className="why-actions">
+              <Magnetic><Link className="button" href="/contact">Book a visit <ArrowRight size={16} /></Link></Magnetic>
+              <Link className="text-link" href="/offerings/#pricing">See pricing <ArrowRight size={15} /></Link>
+            </Reveal>
+          </div>
+          <div className="why-media">
+            <ImageReveal className="why-photo-main" src={photos.reception.src} alt={photos.reception.alt} />
+            <ImageReveal className="why-photo-inset" src={photos.openDeskArea.src} alt={photos.openDeskArea.alt} parallax={false} delay={0.2} />
+          </div>
         </div>
-        <div className="photo-pair">
-          <ImageReveal className="photo-pair-tall" src={photos.reception.src} alt={photos.reception.alt} />
-          <ImageReveal className="photo-pair-short" src={photos.coffee.src} alt={photos.coffee.alt} crop={photos.coffee.crop} parallax={false} delay={0.15} />
-        </div>
+        <ul className="why-list">
+          {whyReasons.map(({ icon: Icon, title, text }, index) => <Reveal key={title} delay={index * 0.07}><li>
+            <span className="why-icon"><Icon size={20} strokeWidth={1.8} /></span>
+            <strong>{title}</strong>
+            <span className="why-text">{text || `Plans from ${formatRupees(lowestPrice)} a month, with no long lease.`}</span>
+          </li></Reveal>)}
+        </ul>
       </div>
     </section>
 
