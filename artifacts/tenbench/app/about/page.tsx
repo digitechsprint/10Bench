@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Coffee, IndianRupee, LayoutGrid, MapPin, Phone, Presentation, Sparkles, UsersRound } from 'lucide-react';
 import { ImageReveal, Magnetic, Reveal, SplitText } from '../../components/motion';
 import { JsonLd } from '../../components/json-ld';
 import { HeroCollage } from '../../components/hero-collage';
@@ -17,6 +17,10 @@ const principles = [
   { title: 'Good work is human', text: 'Space for a hello, a shared idea and a coffee.', photo: photos.coffee },
   { title: 'No one way to work', text: 'Solo or as a team, there’s a setting that fits.', photo: photos.openDeskArea },
 ];
+
+// Icon for each "Label: value" key fact (labels are edited in the admin, so unknown ones get a default).
+const factIcons = { location: MapPin, workspaces: LayoutGrid, pricing: IndianRupee, 'meeting room': Presentation, 'shared amenities': Coffee, 'ideal for': UsersRound, contact: Phone };
+const factIcon = (label: string) => factIcons[label.trim().toLowerCase() as keyof typeof factIcons] ?? Sparkles;
 
 const steps = [
   { title: 'Tell us what you need', photo: photos.receptionDesk },
@@ -51,12 +55,20 @@ export default async function AboutPage() {
     </div></section>
 
     {/* A plain-language summary and fact list: easy for answer engines and AI assistants to quote. */}
-    <section className="glance-section"><div className="container glance-grid">
-      <Reveal><span className="eyebrow">10Bench at a glance</span><p className="glance-summary">{seo.aeo.summary}</p></Reveal>
-      <Reveal delay={0.1}><dl className="glance-facts">{seo.aeo.keyFacts.map(fact => {
+    <section className="section-pad glance-section"><div className="container">
+      <div className="glance-head">
+        <div><Reveal><span className="eyebrow">10Bench at a glance</span></Reveal><SplitText className="display">The essentials, <span className="editorial">in one place.</span></SplitText></div>
+        <Reveal delay={0.1}><p className="glance-summary">{seo.aeo.summary}</p></Reveal>
+      </div>
+      <dl className="glance-facts">{seo.aeo.keyFacts.map((fact, index) => {
         const [label, ...rest] = fact.split(':');
-        return rest.length ? <div key={fact}><dt>{label}</dt><dd>{rest.join(':').trim()}</dd></div> : <div key={fact}><dd>{fact}</dd></div>;
-      })}</dl></Reveal>
+        const value = rest.join(':').trim();
+        const Icon = factIcon(label);
+        return <Reveal key={fact} delay={(index % 4) * 0.06} className="glance-fact">
+          <span className="glance-icon"><Icon size={20} strokeWidth={1.8} /></span>
+          {value ? <><dt>{label}</dt><dd>{value.charAt(0).toUpperCase() + value.slice(1)}</dd></> : <dd>{fact}</dd>}
+        </Reveal>;
+      })}</dl>
     </div></section>
 
     <section className="photo-band">
