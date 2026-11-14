@@ -48,9 +48,9 @@ export default async function AboutPage() {
         <SplitText className="display">A little more human. <span className="editorial">A lot more room.</span></SplitText>
         <Reveal delay={0.15}><p>Some days need quiet focus, others need company. 10Bench gives you both under one roof: warm wood, glass-fronted cabins and a lounge full of colour.</p><Link className="text-link" href="/offerings">See how you could work here <ArrowRight size={15} /></Link></Reveal>
       </div>
-      <div className="photo-pair">
-        <ImageReveal className="photo-pair-tall" src={photos.meeting.src} alt={photos.meeting.alt} />
-        <ImageReveal className="photo-pair-short" src={photos.cabinCompact.src} alt={photos.cabinCompact.alt} parallax={false} delay={0.15} />
+      <div className="why-media">
+        <ImageReveal className="why-photo-main" src={photos.meeting.src} alt={photos.meeting.alt} />
+        <ImageReveal className="why-photo-inset" src={photos.cabinCompact.src} alt={photos.cabinCompact.alt} parallax={false} delay={0.2} />
       </div>
     </div></section>
 
