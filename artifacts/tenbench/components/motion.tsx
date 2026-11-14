@@ -93,8 +93,19 @@ export function SplitText({ as = 'h2', className = '', children, delay = 0, stag
   return <Tag ref={ref} className={className}>{splitWords(children, 'w', { show, reduce, delay, stagger, count: 0 })}</Tag>;
 }
 
-export function ImageReveal({ src, alt, className = '', children, delay = 0, parallax = true, cursor = 'View', as = 'div' }: {
+export type Crop = { x: number; y: number; zoom: number };
+
+/** Zooms in and moves the focus point to the centre, clamped so the photo always fills the frame. */
+function cropStyle({ x, y, zoom }: Crop) {
+  const limit = 50 - 50 / zoom;
+  const clamp = (value: number) => Math.max(-limit, Math.min(limit, value));
+  return { transform: `scale(${zoom}) translate(${clamp(50 - x).toFixed(2)}%, ${clamp(50 - y).toFixed(2)}%)`, transformOrigin: '50% 50%' };
+}
+
+export function ImageReveal({ src, alt, className = '', children, delay = 0, parallax = true, cursor = 'View', as = 'div', crop }: {
   src: string; alt: string; className?: string; children?: ReactNode; delay?: number; parallax?: boolean; cursor?: string; as?: 'div' | 'figure';
+  /** Zoom into one part of the photo: x/y are the focus point in percent. */
+  crop?: Crop;
 }) {
   const { ref, reduce, show } = useEntrance<HTMLDivElement>(0.15);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
@@ -110,14 +121,16 @@ export function ImageReveal({ src, alt, className = '', children, delay = 0, par
     >
     <motion.div className="img-parallax" style={parallax && !reduce ? { y } : undefined}>
       <div className="img-zoom">
-        <motion.img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          initial={reduce ? false : { scale: 1.3 }}
-          animate={show ? { scale: 1 } : undefined}
-          transition={{ duration: 1.8, ease, delay }}
-        />
+        <div className="img-crop" style={crop ? cropStyle(crop) : undefined}>
+          <motion.img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            initial={reduce ? false : { scale: 1.3 }}
+            animate={show ? { scale: 1 } : undefined}
+            transition={{ duration: 1.8, ease, delay }}
+          />
+        </div>
       </div>
     </motion.div>
     </motion.div>

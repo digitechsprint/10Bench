@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { ImageReveal, LightboxGallery, Magnetic, Reveal, SplitText } from '../../components/motion';
 import { JsonLd } from '../../components/json-ld';
+import { HeroCollage } from '../../components/hero-collage';
+import { photos } from '../../components/photos';
 import { absoluteUrl, breadcrumbSchema, pageMetadata } from '../../lib/seo';
 import { getSeo } from '../../lib/settings';
 
@@ -28,10 +30,16 @@ export default async function GalleryPage() {
         image: [...tour, { src: '/images/workspace-floorplan.jpeg', alt: 'Floor plan of 10Bench' }].map(item => ({ '@type': 'ImageObject', contentUrl: absoluteUrl(seo, item.src), description: item.alt })),
       },
     ]} />
-    <section className="page-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
-      <Reveal y={16}><span className="eyebrow">Gallery tour</span></Reveal>
-      <SplitText as="h1" className="display" delay={0.1}>A first look<br />at <span className="editorial">your next place.</span></SplitText>
-      <Reveal delay={0.45}><p>Move through the spaces, notice the details, and picture how your own workday might unfold here.</p></Reveal>
+    <section className="page-hero has-media"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
+      <div className="page-hero-copy">
+        <Reveal y={16}><span className="eyebrow">Gallery tour</span></Reveal>
+        <SplitText as="h1" className="display" delay={0.1}>A first look at <span className="editorial">your next place.</span></SplitText>
+        <Reveal delay={0.45}><p>Reception, lounge, cabins and the meeting room. Take a look inside 10Bench.</p></Reveal>
+      </div>
+      <HeroCollage main={photos.lounge} side={[photos.reception, photos.meeting]} caption="The breakout lounge" />
+    </div></section>
+    <section className="detail-strip"><div className="container detail-grid">
+      {[photos.coffee, photos.receptionSign, photos.cabins, photos.meetingScreen, photos.loungeChairs].map((photo, index) => <ImageReveal key={photo.alt} className="detail-tile" src={photo.src} alt={photo.alt} crop={photo.crop} parallax={false} delay={index * 0.06} cursor="" />)}
     </div></section>
     <section className="section-pad">
       <div className="container tour-intro">

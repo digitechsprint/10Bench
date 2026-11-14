@@ -16,6 +16,7 @@ export function sanitizeSeo(input: unknown): { settings: SeoSettings; errors: st
   const pages = obj(root.pages);
   const aeo = obj(root.aeo);
   const ai = obj(root.ai);
+  const pricing = obj(root.pricing);
   const errors: string[] = [];
 
   const url = str(site.url, 200).replace(/\/+$/, '');
@@ -75,6 +76,27 @@ export function sanitizeSeo(input: unknown): { settings: SeoSettings; errors: st
     }).filter(faq => faq.question && faq.answer).slice(0, 40),
     aeo: { summary: str(aeo.summary, 1500), keyFacts: list(aeo.keyFacts, 20, 300) },
     ai: { allowAiCrawlers: ai.allowAiCrawlers !== false, llmsIntro: str(ai.llmsIntro, 500) },
+    pricing: {
+      note: str(pricing.note, 300),
+      plans: (Array.isArray(pricing.plans) ? pricing.plans : []).slice(0, 12).map((item, index) => {
+        const plan = obj(item);
+        const name = str(plan.name, 60);
+        const price = Math.round(Number(plan.price));
+        if (!name) errors.push(`Price plan ${index + 1} needs a name.`);
+        if (!Number.isFinite(price) || price < 0) errors.push(`${name || `Price plan ${index + 1}`}: the price must be a number.`);
+        return {
+          id: str(plan.id, 40) || `plan-${index + 1}`,
+          name,
+          price: Number.isFinite(price) ? price : 0,
+          unit: str(plan.unit, 40),
+          plusGst: plan.plusGst === true,
+          description: str(plan.description, 300),
+          detail: str(plan.detail, 80),
+          features: list(plan.features, 8, 120),
+          badge: str(plan.badge, 40),
+        };
+      }),
+    },
   };
 
   if (!settings.site.name) errors.push('Site name is required.');

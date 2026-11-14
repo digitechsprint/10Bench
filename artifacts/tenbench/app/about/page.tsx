@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, Compass, DoorOpen, Sparkles } from 'lucide-react';
-import { ImageReveal, Magnetic, Reveal, ScrollWords, SplitText } from '../../components/motion';
+import { ArrowRight } from 'lucide-react';
+import { ImageReveal, Magnetic, Reveal, SplitText } from '../../components/motion';
 import { JsonLd } from '../../components/json-ld';
+import { HeroCollage } from '../../components/hero-collage';
+import { photos } from '../../components/photos';
 import { breadcrumbSchema, pageMetadata } from '../../lib/seo';
 import { getSeo } from '../../lib/settings';
 
@@ -11,35 +13,43 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const principles = [
-  ['01', 'Focus deserves a home', 'A workspace should help you get into the work, with room to concentrate and the essentials close at hand.'],
-  ['02', 'Good work is human', 'The best workdays leave space for a hello, a shared idea, and a change of scene.'],
-  ['03', 'There is no one way to work', 'Independent professionals and growing teams have different rhythms. A good space can support both.'],
+  { title: 'Focus deserves a home', text: 'Room to concentrate, with the essentials close at hand.', photo: photos.cabins },
+  { title: 'Good work is human', text: 'Space for a hello, a shared idea and a coffee.', photo: photos.coffee },
+  { title: 'No one way to work', text: 'Solo or as a team, there’s a setting that fits.', photo: photos.openDesks },
 ];
 
 const steps = [
-  { icon: Compass, title: 'Tell us what matters', text: 'Focus time, a room for a conversation, or a shared base for your team. Start with the work, not a package name.' },
-  { icon: DoorOpen, title: 'Get to know the space', text: 'Take a look around the different settings and picture how they might fit into your workday.' },
-  { icon: Sparkles, title: 'Find your own rhythm', text: 'Choose a starting point that feels right. The best workday is the one that works for you.' },
+  { title: 'Tell us what you need', photo: photos.receptionDesk },
+  { title: 'Come and see the space', photo: photos.loungeChairs },
+  { title: 'Move in and get going', photo: photos.cabins },
 ];
 
 export default async function AboutPage() {
   const seo = await getSeo();
   return <main>
     <JsonLd data={breadcrumbSchema(seo, [{ name: 'About', path: '/about/' }])} />
-    <section className="page-hero about-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
-      <Reveal y={16}><span className="eyebrow">A space with a point of view</span></Reveal>
-      <SplitText as="h1" className="display" delay={0.1}>Work feels better<br />when it <span className="editorial">fits you.</span></SplitText>
-      <Reveal delay={0.45}><p>10Bench is a coworking space for people who want their workday to feel considered, connected, and entirely their own.</p></Reveal>
-      <Reveal delay={0.6} className="about-hero-foot"><span>Room to focus</span><i /><span>Space to connect</span><i /><span>A day at your own pace</span></Reveal>
+    <section className="page-hero has-media about-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
+      <div className="page-hero-copy">
+        <Reveal y={16}><span className="eyebrow">A space with a point of view</span></Reveal>
+        <SplitText as="h1" className="display" delay={0.1}>Work feels better when it <span className="editorial">fits you.</span></SplitText>
+        <Reveal delay={0.45}><p>A warm, well-designed coworking space in Sector 4, Vaishali, made for focus, good company and a day at your own pace.</p></Reveal>
+        <Reveal delay={0.6} className="about-hero-foot"><span>Room to focus</span><i /><span>Space to connect</span><i /><span>Your own pace</span></Reveal>
+      </div>
+      <HeroCollage main={photos.reception} side={[photos.lounge, photos.coffee]} caption="The 10Bench reception" />
     </div></section>
+
     <section className="section-pad"><div className="container about-intro">
       <div>
         <Reveal><span className="eyebrow">Why 10Bench</span></Reveal>
-        <SplitText className="display">A little more human. A lot more room.</SplitText>
-        <Reveal delay={0.15}><p>Not everyone works the same way. Some need the calm of their own focus; others think best in company. Most need a bit of both, depending on the day.</p><p>We built 10Bench around that everyday truth. A warm welcome, thoughtfully made places to work, and distinct spaces for the ways a workday can move.</p><Link className="text-link" href="/offerings">See how you could work here <ArrowRight size={15} /></Link></Reveal>
+        <SplitText className="display">A little more human. <span className="editorial">A lot more room.</span></SplitText>
+        <Reveal delay={0.15}><p>Some days need quiet focus, others need company. 10Bench gives you both under one roof: warm wood, glass-fronted cabins and a lounge full of colour.</p><Link className="text-link" href="/offerings">See how you could work here <ArrowRight size={15} /></Link></Reveal>
       </div>
-      <ImageReveal src="/images/workspace-reception.jpeg" alt="Warm wood reception and glass-fronted rooms at 10Bench" />
+      <div className="photo-pair">
+        <ImageReveal className="photo-pair-tall" src={photos.receptionSign.src} alt={photos.receptionSign.alt} crop={photos.receptionSign.crop} />
+        <ImageReveal className="photo-pair-short" src={photos.loungeChairs.src} alt={photos.loungeChairs.alt} crop={photos.loungeChairs.crop} parallax={false} delay={0.15} />
+      </div>
     </div></section>
+
     {/* A plain-language summary and fact list: easy for answer engines and AI assistants to quote. */}
     <section className="glance-section"><div className="container glance-grid">
       <Reveal><span className="eyebrow">10Bench at a glance</span><p className="glance-summary">{seo.aeo.summary}</p></Reveal>
@@ -48,39 +58,55 @@ export default async function AboutPage() {
         return rest.length ? <div key={fact}><dt>{label}</dt><dd>{rest.join(':').trim()}</dd></div> : <div key={fact}><dd>{fact}</dd></div>;
       })}</dl></Reveal>
     </div></section>
-    <section className="about-belief"><div className="container about-belief-inner">
-      <Reveal><span className="eyebrow">The simple idea</span></Reveal>
-      <ScrollWords className="display" text="A better workday isn’t one-size-fits-all. *Your* *space* *shouldn’t* *be* *either.*" />
-      <span className="about-belief-mark" aria-hidden="true">10</span>
-    </div></section>
-    <section className="principles"><div className="container principles-grid">
-      <div>
-        <Reveal><span className="eyebrow">What matters here</span></Reveal>
-        <SplitText className="display">Thoughtful by design. Welcoming by nature.</SplitText>
-        <Reveal delay={0.15}><p>We believe the atmosphere around the work matters. It can invite concentration, make a meeting easier, or simply make the day feel lighter.</p></Reveal>
+
+    <section className="photo-band">
+      <ImageReveal className="photo-band-image" src={photos.lounge.src} alt={photos.lounge.alt} cursor="" />
+      <div className="photo-band-overlay"><div className="container">
+        <Reveal><span className="eyebrow">The simple idea</span></Reveal>
+        <SplitText className="display">A better workday isn’t one-size-fits-all. <span className="editorial">Your space shouldn’t be either.</span></SplitText>
+      </div></div>
+    </section>
+
+    <section className="section-pad principles-photos"><div className="container">
+      <div className="section-head">
+        <div><Reveal><span className="eyebrow">What matters here</span></Reveal><SplitText className="display">Thoughtful by design. <span className="editorial">Welcoming by nature.</span></SplitText></div>
       </div>
-      <div className="principle-items">{principles.map(([n, title, text], index) => <Reveal key={n} delay={index * 0.1} className="principle"><span>{n}</span><div><h3>{title}</h3><p>{text}</p></div></Reveal>)}</div>
-    </div></section>
-    <section className="section-pad about-process"><div className="container">
-      <div className="about-process-heading">
-        <div><Reveal><span className="eyebrow">A simple way to begin</span></Reveal><SplitText className="display">Explore at your own pace.</SplitText></div>
-        <Reveal delay={0.15}><p>No complicated formula. Start with what your day needs, then find the setting that makes it easier.</p></Reveal>
-      </div>
-      <div className="about-steps">
-        {steps.map(({ icon: Icon, title, text }, index) => <Reveal key={title} delay={index * 0.12} className="about-step">
-          <span className="about-step-number">0{index + 1}</span><span className="about-step-icon"><Icon size={24} strokeWidth={1.5} /></span><h3>{title}</h3><p>{text}</p>
+      <div className="photo-card-grid">
+        {principles.map((item, index) => <Reveal key={item.title} delay={index * 0.1} className="photo-card">
+          <ImageReveal className="photo-card-image" src={item.photo.src} alt={item.photo.alt} crop={item.photo.crop} parallax={false} cursor="" />
+          <div className="photo-card-text"><span>0{index + 1}</span><h3>{item.title}</h3><p>{item.text}</p></div>
         </Reveal>)}
       </div>
     </div></section>
+
+    <section className="section-pad about-process"><div className="container">
+      <div className="section-head">
+        <div><Reveal><span className="eyebrow">A simple way to begin</span></Reveal><SplitText className="display">Three steps <span className="editorial">to your desk.</span></SplitText></div>
+        <Reveal delay={0.15}><Magnetic><Link href="/contact" className="button">Book a visit <ArrowRight size={16} /></Link></Magnetic></Reveal>
+      </div>
+      <div className="step-photo-grid">
+        {steps.map((step, index) => <Reveal key={step.title} delay={index * 0.1} className="step-photo">
+          <ImageReveal className="step-photo-image" src={step.photo.src} alt={step.photo.alt} crop={step.photo.crop} parallax={false} cursor="">
+            <span className="step-photo-label"><b>0{index + 1}</b>{step.title}</span>
+          </ImageReveal>
+        </Reveal>)}
+      </div>
+    </div></section>
+
     <section className="section-pad about-gallery">
       <div className="container section-head">
-        <div><Reveal><span className="eyebrow">Step inside</span></Reveal><SplitText className="display">A space made to move with your day.</SplitText></div>
-        <Reveal delay={0.15}><Magnetic><Link href="/gallery" className="button button-outline">Explore the gallery <ArrowRight size={15} /></Link></Magnetic></Reveal>
+        <div><Reveal><span className="eyebrow">Step inside</span></Reveal><SplitText className="display">Take a <span className="editorial">look around.</span></SplitText></div>
+        <Reveal delay={0.15}><Magnetic><Link href="/gallery" className="button button-outline">Full gallery <ArrowRight size={15} /></Link></Magnetic></Reveal>
       </div>
-      <div className="container"><ImageReveal className="about-lounge-image" src="/images/workspace-lounge.jpeg" alt="Sunny lounge with colorful armchairs and a central refreshment counter"><span className="about-image-caption">A softer place to pause between tasks</span></ImageReveal></div>
+      <div className="container about-mosaic">
+        <ImageReveal className="about-mosaic-a" src={photos.lounge.src} alt={photos.lounge.alt}><span className="about-image-caption">The breakout lounge</span></ImageReveal>
+        <ImageReveal className="about-mosaic-b" src={photos.meeting.src} alt={photos.meeting.alt} parallax={false} delay={0.1}><span className="about-image-caption">The meeting room</span></ImageReveal>
+        <ImageReveal className="about-mosaic-c" src={photos.reception.src} alt={photos.reception.alt} parallax={false} delay={0.2}><span className="about-image-caption">Reception</span></ImageReveal>
+      </div>
     </section>
+
     <section className="cta-band"><div className="cta-rings" aria-hidden="true"><i /><i /><i /></div><div className="container cta-inner">
-      <SplitText className="display">Find the kind of space that helps you do your thing.</SplitText>
+      <SplitText className="display">Find the space that helps you <span className="editorial">do your thing.</span></SplitText>
       <Reveal delay={0.2}><Magnetic><Link href="/contact" className="button">Talk with us <ArrowRight size={16} /></Link></Magnetic></Reveal>
     </div></section>
   </main>;

@@ -5,6 +5,8 @@ import { ContactForm } from '../../components/site-shell';
 import { buildContact } from '../../components/site-content';
 import { ImageReveal, Reveal, SplitText } from '../../components/motion';
 import { JsonLd } from '../../components/json-ld';
+import { HeroCollage } from '../../components/hero-collage';
+import { photos } from '../../components/photos';
 import { absoluteUrl, breadcrumbSchema, pageMetadata } from '../../lib/seo';
 import { getSeo } from '../../lib/settings';
 import { supabaseConfigured } from '../../lib/supabase';
@@ -21,14 +23,16 @@ export default async function ContactPage() {
       breadcrumbSchema(seo, [{ name: 'Contact', path: '/contact/' }]),
       { '@context': 'https://schema.org', '@type': 'ContactPage', name: seo.pages.contact.title, url: absoluteUrl(seo, '/contact/'), about: { '@id': absoluteUrl(seo, '/#business') } },
     ]} />
-    <section className="page-hero contact-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
-      <Reveal y={16}><span className="eyebrow">Contact 10Bench</span></Reveal>
-      <SplitText as="h1" className="display" delay={0.1}>Let’s find your<br /><span className="editorial">perfect desk.</span></SplitText>
-      <Reveal delay={0.45}><p>Looking for a desk, a private cabin for your team or a room for your next client meeting? Call, WhatsApp or send an enquiry, and come see 10Bench for yourself.</p><div className="quick-actions">
-        <a href={contact.phoneHref} className="button"><Phone size={16} /> Call {contact.phone}</a>
-        <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer" className="button button-outline"><MessageCircle size={16} /> WhatsApp us</a>
-      </div><Link href="#enquiry" className="contact-jump">Or send an enquiry <ArrowDown size={15} /></Link></Reveal>
-      <div className="contact-hero-mark" aria-hidden="true">10<span>BENCH</span></div>
+    <section className="page-hero has-media contact-hero"><span className="page-hero-orb" aria-hidden="true" /><div className="container">
+      <div className="page-hero-copy">
+        <Reveal y={16}><span className="eyebrow">Contact 10Bench</span></Reveal>
+        <SplitText as="h1" className="display" delay={0.1}>Let’s find your <span className="editorial">perfect desk.</span></SplitText>
+        <Reveal delay={0.45}><p>Call, WhatsApp or send an enquiry, then come and see the space for yourself.</p><div className="quick-actions">
+          <a href={contact.phoneHref} className="button"><Phone size={16} /> Call {contact.phone}</a>
+          <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer" className="button button-outline"><MessageCircle size={16} /> WhatsApp us</a>
+        </div><Link href="#enquiry" className="contact-jump">Or send an enquiry <ArrowDown size={15} /></Link></Reveal>
+      </div>
+      <HeroCollage main={photos.reception} side={[photos.receptionDesk, photos.coffee]} caption={contact.address} />
     </div></section>
     <section className="section-pad contact-section"><div className="container contact-grid">
       <div className="contact-copy">

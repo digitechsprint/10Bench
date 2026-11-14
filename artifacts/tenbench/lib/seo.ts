@@ -20,7 +20,16 @@ export type SeoSettings = {
   faqs: Faq[];
   aeo: { summary: string; keyFacts: string[] };
   ai: { allowAiCrawlers: boolean; llmsIntro: string };
+  pricing: { note: string; plans: PricePlan[] };
 };
+
+/** One price card. `price` is in rupees; `plusGst` shows "+ GST" after it. */
+export type PricePlan = {
+  id: string; name: string; price: number; unit: string; plusGst: boolean;
+  description: string; detail: string; features: string[]; badge: string;
+};
+
+export const formatRupees = (amount: number) => `₹${amount.toLocaleString('en-IN')}`;
 
 export const defaultSeo = seoData as SeoSettings;
 
@@ -35,6 +44,7 @@ export function withDefaults(saved: Partial<SeoSettings> | null | undefined): Se
     faqs: Array.isArray(saved.faqs) ? saved.faqs : d.faqs,
     aeo: { ...d.aeo, ...saved.aeo },
     ai: { ...d.ai, ...saved.ai },
+    pricing: { ...d.pricing, ...saved.pricing, plans: Array.isArray(saved.pricing?.plans) ? saved.pricing.plans : d.pricing.plans },
   };
 }
 
@@ -119,6 +129,32 @@ export function breadcrumbSchema(s: SeoSettings, items: { name: string; path: st
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [{ name: 'Home', path: '/' }, ...items].map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: absoluteUrl(s, item.path) })),
+  };
+}
+
+/** Price list as structured data, so search and AI answers can quote real prices. */
+export function pricingSchema(s: SeoSettings) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'OfferCatalog',
+    name: `Coworking prices at ${s.business.name}`,
+    itemListElement: s.pricing.plans.map(plan => ({
+      '@type': 'Offer',
+      name: plan.name,
+      description: plan.description,
+      price: plan.price,
+      priceCurrency: 'INR',
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: plan.price,
+        priceCurrency: 'INR',
+        unitText: plan.unit,
+        billingDuration: 'P1M',
+        valueAddedTaxIncluded: !plan.plusGst,
+      },
+      seller: { '@id': `${siteUrl(s)}/#business` },
+      areaServed: s.business.locality,
+    })),
   };
 }
 

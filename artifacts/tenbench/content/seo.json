@@ -1,7 +1,7 @@
 {
   "site": {
     "name": "10Bench Coworking Spaces",
-    "url": "https://10-bench.vercel.app",
+    "url": "https://10bench.in",
     "titleTemplate": "%s | 10Bench Coworking",
     "defaultTitle": "10Bench Coworking Spaces | Coworking in Vaishali, Ghaziabad",
     "defaultDescription": "Open desks, dedicated desks, private cabins and a meeting room in Sector 4, Vaishali, Ghaziabad. Book a visit to 10Bench Coworking today.",
@@ -100,7 +100,7 @@
     },
     {
       "question": "How much does a desk or cabin cost?",
-      "answer": "Pricing depends on the type of space, the number of seats and how long you need it. Share your requirements with 10Bench and they will send the options that fit."
+      "answer": "A coworking seat at 10Bench is ₹5,000 per seat per month. Private cabins are ₹16,000, ₹20,000 or ₹30,000 per month plus GST, depending on the cabin."
     },
     {
       "question": "Is there space for a whole team?",
@@ -112,10 +112,11 @@
     }
   ],
   "aeo": {
-    "summary": "10Bench Coworking Spaces is a coworking space at 116, Sector 4, Vaishali, Ghaziabad, Uttar Pradesh, India. It offers open desks, dedicated desks, private cabins for teams and a meeting room with a presentation screen, along with a breakout lounge, a coffee counter and a front-desk reception. It serves freelancers, startups, remote employees and small teams across Ghaziabad, Noida and East Delhi. Contact: +91 97739 87782, spaces@10bench.in.",
+    "summary": "10Bench Coworking Spaces is a coworking space at 116, Sector 4, Vaishali, Ghaziabad, Uttar Pradesh, India. It offers open desks, dedicated desks, private cabins for teams and a meeting room with a presentation screen, along with a breakout lounge, a coffee counter and a front-desk reception. A coworking seat costs ₹5,000 per month and private cabins start at ₹16,000 per month plus GST. It serves freelancers, startups, remote employees and small teams across Ghaziabad, Noida and East Delhi. Contact: +91 97739 87782, spaces@10bench.in.",
     "keyFacts": [
       "Location: 116, Sector 4, Vaishali, Ghaziabad, Uttar Pradesh",
       "Workspaces: open desks, dedicated desks, private cabins and a meeting room",
+      "Pricing: coworking seat ₹5,000 per month; private cabins ₹16,000 to ₹30,000 per month + GST",
       "Meeting room: long table and presentation screen",
       "Shared amenities: breakout lounge, coffee counter and front-desk reception",
       "Ideal for: freelancers, startups, remote employees and small teams",
@@ -125,5 +126,54 @@
   "ai": {
     "allowAiCrawlers": true,
     "llmsIntro": "Official information about 10Bench Coworking Spaces for AI assistants and answer engines."
+  },
+  "pricing": {
+    "note": "All prices are per month. Cabin prices are plus 18% GST.",
+    "plans": [
+      {
+        "id": "seat",
+        "name": "Coworking seat",
+        "price": 5000,
+        "unit": "per seat / month",
+        "plusGst": false,
+        "description": "Your own seat in the shared work area, with everything you need to get straight to work.",
+        "detail": "Book one seat or several",
+        "features": ["Seat in the shared work area", "Lounge and coffee counter access", "Front-desk reception"],
+        "badge": ""
+      },
+      {
+        "id": "cabin-compact",
+        "name": "Compact cabin",
+        "price": 16000,
+        "unit": "per cabin / month",
+        "plusGst": true,
+        "description": "A private, glass-fronted cabin for a small team that needs its own room.",
+        "detail": "3 cabins in this size",
+        "features": ["Private enclosed cabin", "Quiet for calls and focus", "All shared amenities included"],
+        "badge": ""
+      },
+      {
+        "id": "cabin-standard",
+        "name": "Team cabin",
+        "price": 20000,
+        "unit": "per cabin / month",
+        "plusGst": true,
+        "description": "A private cabin with room for a growing team to settle in.",
+        "detail": "10 cabins in this size",
+        "features": ["Private enclosed cabin", "Space for a growing team", "All shared amenities included"],
+        "badge": "Most cabins available"
+      },
+      {
+        "id": "cabin-large",
+        "name": "Large cabin",
+        "price": 30000,
+        "unit": "per cabin / month",
+        "plusGst": true,
+        "description": "Our biggest private cabins for established teams.",
+        "detail": "2 cabins in this size",
+        "features": ["Largest private cabins", "Room for a bigger team", "All shared amenities included"],
+        "badge": ""
+      }
+    ]
   }
 }

@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import {
-  ArrowDown, ArrowUp, Bot, Building2, CheckCircle2, Database, Download, ExternalLink, FileText, Gauge, Globe2, HelpCircle, Inbox, Loader2, LogOut, Mail, MapPin,
+  ArrowDown, ArrowUp, Bot, Building2, IndianRupee, CheckCircle2, Database, Download, ExternalLink, FileText, Gauge, Globe2, HelpCircle, Inbox, Loader2, LogOut, Mail, MapPin,
   MessageCircle, Phone, Plus, RefreshCw, Save, Search, Trash2, TriangleAlert,
 } from 'lucide-react';
 import type { PageKey, SeoSettings } from '../../lib/seo';
 
-type Section = 'overview' | 'enquiries' | 'site' | 'pages' | 'business' | 'faqs' | 'ai';
+type Section = 'overview' | 'enquiries' | 'pricing' | 'site' | 'pages' | 'business' | 'faqs' | 'ai';
 type Storage = 'supabase' | 'github' | 'local' | 'none';
 type EnquiryStatus = 'new' | 'contacted' | 'closed';
 type Enquiry = { id: string; created_at: string; name: string; email: string; phone: string | null; interest: string | null; message: string; page: string | null; status: EnquiryStatus; notes: string | null };
@@ -23,6 +23,7 @@ const storageLabels: Record<Storage, string> = {
 const sections: { id: Section; label: string; icon: typeof Gauge; hint: string }[] = [
   { id: 'overview', label: 'Overview', icon: Gauge, hint: 'SEO health and quick links' },
   { id: 'enquiries', label: 'Enquiries', icon: Inbox, hint: 'Messages sent from the website contact form' },
+  { id: 'pricing', label: 'Pricing', icon: IndianRupee, hint: 'Monthly prices shown on the website, in search results and to AI assistants' },
   { id: 'site', label: 'Search basics', icon: Search, hint: 'Site title, description, keywords, verification' },
   { id: 'pages', label: 'Pages', icon: FileText, hint: 'Title, description and share image per page' },
   { id: 'business', label: 'Business & location', icon: Building2, hint: 'Local SEO, address, hours and map position' },
@@ -456,6 +457,44 @@ export function AdminApp() {
             <ListField label="Profiles (sameAs)" hint="One link per line: Google Business Profile, Instagram, LinkedIn, Facebook, JustDial…" placeholder="https://www.instagram.com/…" value={s.business.sameAs} onChange={value => update(d => { d.business.sameAs = value; })} />
           </div>
         </div>}
+
+        {section === 'pricing' && <>
+          <div className="adm-card">
+            <h2>Price note</h2>
+            <Field label="Shown under the price cards" hint="e.g. All prices are per month. Cabin prices are plus 18% GST.">
+              <input value={s.pricing.note} onChange={e => update(d => { d.pricing.note = e.target.value; })} />
+            </Field>
+          </div>
+          <div className="adm-plans">
+            {s.pricing.plans.map((plan, index) => <div key={index} className={`adm-card adm-plan ${plan.badge ? 'is-featured' : ''}`}>
+              <div className="adm-plan-head">
+                <strong>{plan.name || `Plan ${index + 1}`}</strong>
+                <div className="adm-faq-actions adm-plan-actions">
+                  <button type="button" aria-label="Move left" disabled={index === 0} onClick={() => update(d => { [d.pricing.plans[index - 1], d.pricing.plans[index]] = [d.pricing.plans[index], d.pricing.plans[index - 1]]; })}><ArrowUp size={15} /></button>
+                  <button type="button" aria-label="Move right" disabled={index === s.pricing.plans.length - 1} onClick={() => update(d => { [d.pricing.plans[index + 1], d.pricing.plans[index]] = [d.pricing.plans[index], d.pricing.plans[index + 1]]; })}><ArrowDown size={15} /></button>
+                  <button type="button" aria-label="Delete plan" className="is-danger" onClick={() => { if (window.confirm(`Remove ${plan.name || 'this plan'}?`)) update(d => { d.pricing.plans.splice(index, 1); }); }}><Trash2 size={15} /></button>
+                </div>
+              </div>
+              <Field label="Plan name"><input value={plan.name} onChange={e => update(d => { d.pricing.plans[index].name = e.target.value; })} /></Field>
+              <div className="adm-row">
+                <Field label="Price (₹)"><input type="number" min={0} step={100} value={plan.price} onChange={e => update(d => { d.pricing.plans[index].price = Number(e.target.value); })} /></Field>
+                <Field label="Unit"><input value={plan.unit} placeholder="per seat / month" onChange={e => update(d => { d.pricing.plans[index].unit = e.target.value; })} /></Field>
+              </div>
+              <label className="adm-toggle">
+                <input type="checkbox" checked={plan.plusGst} onChange={e => update(d => { d.pricing.plans[index].plusGst = e.target.checked; })} />
+                <span /> Show “+ GST” after the price
+              </label>
+              <Field label="Short description"><textarea rows={2} value={plan.description} onChange={e => update(d => { d.pricing.plans[index].description = e.target.value; })} /></Field>
+              <ListField label="What’s included" value={plan.features} onChange={value => update(d => { d.pricing.plans[index].features = value; })} rows={3} />
+              <div className="adm-row">
+                <Field label="Small print" hint="e.g. 3 cabins in this size"><input value={plan.detail} onChange={e => update(d => { d.pricing.plans[index].detail = e.target.value; })} /></Field>
+                <Field label="Badge" hint="Optional highlight, e.g. Most cabins available"><input value={plan.badge} onChange={e => update(d => { d.pricing.plans[index].badge = e.target.value; })} /></Field>
+              </div>
+              <p className="adm-plan-preview">Shown as <b>₹{(Number(plan.price) || 0).toLocaleString('en-IN')}{plan.plusGst ? ' + GST' : ''}</b> {plan.unit}</p>
+            </div>)}
+          </div>
+          <button type="button" className="adm-btn adm-btn-ghost" onClick={() => update(d => { d.pricing.plans.push({ id: `plan-${Date.now()}`, name: '', price: 0, unit: 'per month', plusGst: true, description: '', detail: '', features: [], badge: '' }); })}><Plus size={16} /> Add a plan</button>
+        </>}
 
         {section === 'faqs' && <div className="adm-card">
           <h2>Frequently asked questions</h2>

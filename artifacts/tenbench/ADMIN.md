@@ -2,6 +2,7 @@
 
 The admin panel lives at **`/admin`** (for example `https://10-bench.vercel.app/admin`). It has:
 
+- **Pricing**: the monthly price cards (seat and cabin plans), also used in search results and llms.txt.
 - **Enquiries**: messages from the website contact form, with status (new / contacted / closed),
   internal notes, one-tap email / call / WhatsApp replies and CSV export.
 - **SEO settings** that drive:

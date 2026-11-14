@@ -4,6 +4,8 @@ import { ArrowRight } from 'lucide-react';
 import { ImageReveal, Magnetic, Reveal, SplitText } from '../../components/motion';
 import { articles } from '../../components/blog-data';
 import { JsonLd } from '../../components/json-ld';
+import { HeroCollage } from '../../components/hero-collage';
+import { photos } from '../../components/photos';
 import { absoluteUrl, breadcrumbSchema, pageMetadata } from '../../lib/seo';
 import { getSeo } from '../../lib/settings';
 
@@ -27,10 +29,13 @@ export default async function BlogsPage() {
         blogPost: articles.map(article => ({ '@type': 'BlogPosting', headline: article.title, description: article.excerpt, url: absoluteUrl(seo, `/blogs/${article.slug}/`) })),
       },
     ]} />
-    <section className="page-hero journal-hero"><div className="container">
-      <Reveal y={16}><span className="eyebrow">The 10Bench journal</span></Reveal>
-      <SplitText as="h1" className="display" delay={0.1}>A few thoughts<br />on <span className="editorial">working well.</span></SplitText>
-      <Reveal delay={0.45}><p>Notes on focus, fresh perspectives, useful spaces, and the small things that shape a workday.</p><div className="journal-hero-note">FIELD NOTES <span>—</span> WORK, SPACE & THE IN-BETWEEN</div></Reveal>
+    <section className="page-hero has-media journal-hero"><div className="container">
+      <div className="page-hero-copy">
+        <Reveal y={16}><span className="eyebrow">The 10Bench journal</span></Reveal>
+        <SplitText as="h1" className="display" delay={0.1}>A few thoughts on <span className="editorial">working well.</span></SplitText>
+        <Reveal delay={0.45}><p>Notes on focus, good spaces and the small things that shape a workday.</p></Reveal>
+      </div>
+      <HeroCollage main={photos.coffee} side={[photos.meetingTable, photos.loungeChairs]} />
     </div></section>
     <section className="section-pad journal-section"><div className="container">
       <Reveal className="journal-heading"><span className="eyebrow">From the journal</span><span>{String(articles.length).padStart(2, '0')} notes to explore</span></Reveal>

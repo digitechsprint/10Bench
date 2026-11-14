@@ -135,6 +135,15 @@
 .adm-badge { margin-left: auto; min-width: 22px; padding: 2px 7px; border-radius: 999px; background: white; color: var(--orange); font: 800 11px/1.4 var(--font-body); font-style: normal; text-align: center; }
 .adm-side nav button:not(.is-active) .adm-badge { background: var(--orange); color: white; }
 
+/* Pricing */
+.adm-plans { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; align-items: start; }
+.adm-plan.is-featured { border-color: var(--orange); }
+.adm-plan-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.adm-plan-head strong { font: 700 17px var(--font-display); }
+.adm-plan-actions { display: flex; }
+.adm-plan-preview { margin: 0; padding: 10px 12px; border-radius: 10px; background: #faf8f5; color: var(--adm-muted); font-size: 13px; }
+.adm-plan-preview b { color: var(--adm-text); }
+
 /* Enquiries */
 .adm-inbox-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
 .adm-inbox-actions { display: flex; gap: 8px; }
